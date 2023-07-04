@@ -66,6 +66,7 @@
 		CF689BDF2A433B59009200C3 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF689BDE2A433B59009200C3 /* ChatView.swift */; };
 		CF689BEF2A434081009200C3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF689BEE2A434081009200C3 /* User.swift */; };
 		CF689BF12A4343F7009200C3 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF689BF02A4343F7009200C3 /* Event.swift */; };
+		CFF67F502A5444E800E9B52E /* ApiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF67F4F2A5444E800E9B52E /* ApiModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -135,6 +136,7 @@
 		CF689BDE2A433B59009200C3 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		CF689BEE2A434081009200C3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CF689BF02A4343F7009200C3 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		CFF67F4F2A5444E800E9B52E /* ApiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +319,7 @@
 			children = (
 				CF689BE92A433D2D009200C3 /* Structures */,
 				CF0F1E792A45822700A83947 /* Color.swift */,
+				CFF67F4F2A5444E800E9B52E /* ApiModels.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				CF0F1E802A45CAC600A83947 /* IconUserView.swift in Sources */,
 				CF0F1EA92A4AE4EC00A83947 /* WaitingToStartQuiz.swift in Sources */,
 				CF689BF12A4343F7009200C3 /* Event.swift in Sources */,
+				CFF67F502A5444E800E9B52E /* ApiModels.swift in Sources */,
 				CF0F1E872A4A363600A83947 /* AddConversationView.swift in Sources */,
 				CF0F1EB22A4AE8A400A83947 /* NewsView.swift in Sources */,
 				CF2E04522A4C72D80018497D /* NewConversationView.swift in Sources */,

@@ -25,6 +25,111 @@ class UsersVM : ObservableObject {
     func removeUser (user: User) {
         self.users = self.users.filter { $0 !== user }
     }
+    
+//    func fetchUsers() async {
+//        let apikey = "key7FutjOPCf6ezGz"
+//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/") {
+//            do {
+//                var request = URLRequest(url: url)
+//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+//
+//                let (data, _) = try await URLSession.shared.data(for: request)
+//                if let decodedResponse = try? JSONDecoder().decode(UserResponse.self, from: data) {
+//                    print("TESSST")
+//                    users = decodedResponse.users
+//                } else {
+//                    print("PAS BONNN")
+//                }
+//            } catch {
+//                print("Invalid data")
+//            }
+//        }
+//    }
+//
+//    func addUser(user: User) async {
+//        let record = RecordUser(fields: user)
+//
+//        let apikey = "key7FutjOPCf6ezGz"
+//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/") {
+//            do {
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "POST"
+//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//                let jsonPig = try JSONEncoder().encode(record)
+//
+//                request.httpBody = jsonPig
+//
+//                let (_, response) = try await URLSession.shared.data(for: request)
+//
+//                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+//                    print("All is ok")
+//                    await fetchUsers()
+//                }
+//
+//            } catch {
+//                print("Invalid data")
+//            }
+//        }
+//    }
+//
+//    func delUser (id: String) async  {
+//        var deleted: Bool = false
+//
+//        let apikey = "key7FutjOPCf6ezGz"
+//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/" + id) {
+//            do {
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "DELETE"
+//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+//
+//                let (data, _) = try await URLSession.shared.data(for: request)
+//
+//                if let decodedResponse = try? JSONDecoder().decode(RecordUser.self, from: data) {
+//                    print("TESSST")
+//                    deleted = decodedResponse.deleted!
+//
+//                    if (deleted) {
+//                        print("DEL")
+//                    }
+//                } else {
+//                    print("PAS BONNN")
+//                }
+//            } catch {
+//                print("Invalid data")
+//            }
+//        }
+//    }
+//
+//    func updateUser (user: User) async {
+//        let record = RecordUser(fields: user)
+//
+//        let apikey = "key7FutjOPCf6ezGz"
+//
+//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/" + user.id) {
+//            do {
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "PATCH"
+//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//                let jsonPig = try JSONEncoder().encode(record)
+//
+//                request.httpBody = jsonPig
+//
+//                let (_, response) = try await URLSession.shared.data(for: request)
+//
+//                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+//                    print("All is ok")
+//                    await fetchUsers()
+//                }
+//
+//            } catch {
+//                print("Invalid data")
+//            }
+//        }
+//    }
 }
 
 var userSonia: User = User(pseudo: "Sonia", photo: "sonia", coverPhoto: "sonia", city: "Marseille", language: [Language.french, Language.english], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
