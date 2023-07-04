@@ -1,15 +1,14 @@
 //
-//  ProfilView.swift
+//  OtherUserProfileView.swift
 //  Harmony
 //
-//  Created by apprenant44 on 21/06/2023.
+//  Created by apprenant71 on 04/07/2023.
 //
 
 import SwiftUI
 
-struct ProfilView: View {
-    
-    @ObservedObject var currentUser : User
+struct OtherUserProfileView: View {
+    @ObservedObject var user : User
     @ObservedObject var eventsList : EventsViewModel
     let now = Date()
     
@@ -29,12 +28,12 @@ struct ProfilView: View {
     
     
     var body: some View {
-        NavigationStack {
+
             ScrollView {
                 VStack {
                     
                     ZStack(alignment: .top) {
-                        Image(currentUser.coverPhoto)
+                        Image(user.coverPhoto)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 200)
@@ -43,7 +42,7 @@ struct ProfilView: View {
                             .stroke(Color.whiteSmoke, lineWidth: 16)
                             .frame(width: 120, height: 120)
                             .padding(.top, 140)
-                        Image(currentUser.photo)
+                        Image(user.photo)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 120, height: 120)
@@ -54,53 +53,25 @@ struct ProfilView: View {
                     
                     
                     VStack(spacing: 8) {
-                        Text(currentUser.pseudo)
+                        Text(user.pseudo)
                             .modifier(Head0())
                         
                         HStack {
                             MapPinView()
-                            Text(currentUser.city)
+                            Text(user.city)
                             
                         }
                         .modifier(HeadGray())
                     }
                     .padding(.bottom, 24)
                     
-                    HStack(spacing: 16) {
-                        NavigationLink(destination: ProfileCustomView(currentUser: currentUser), isActive: $isEditingProfile) {
-                            EmptyView()
-                        }
-                        .hidden()
-                        
-                        Button {
-                            isEditingProfile = true // Activate the navigation
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                            Text("Modifier le Profil")
-                                .padding(4)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(Color.graySky.opacity(0.4))
-                        .cornerRadius(8)
-                        .font(.custom("UrbanistSemiBold", size: 16))
-                        .foregroundColor(Color.darkPeriwinkle)
-                        
-                        //                    NavigationLink(destination: ProfileCustomView(currentUser: currentUser), isActive: $isEditingProfile) {
-                        //                        EmptyView()
-                        //                    }
-                        //                    .hidden()
-                        
-                        Image(systemName: "gearshape.fill")
-                            .modifier(HeadGray())
-                    }
-                    .padding(.bottom, 24)
                     
                     // --------------- Section : A propos de moi ---------------
                     VStack(alignment: .leading, spacing: 16) {
                         Text("À propos de moi")
                             .modifier(Head1())
                         
-                        Text(currentUser.about)
+                        Text(user.about)
                             .modifier(Normal())
                     }
                     .padding(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
@@ -113,7 +84,7 @@ struct ProfilView: View {
                         //                Make a list to display all the languages of the user with Text(userViewModel.currentUser.language)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(currentUser.language, id: \.self) { language in
+                                ForEach(user.language, id: \.self) { language in
                                     Text(language.rawValue)
                                         .padding(8)
                                         .background(Color.darkPeriwinkle)
@@ -133,7 +104,7 @@ struct ProfilView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(myCommunities(user: currentUser)) { community in
+                                ForEach(myCommunities(user: user)) { community in
                                     
                                     ZStack(alignment: .top) {
                                         Rectangle()
@@ -166,7 +137,7 @@ struct ProfilView: View {
                         Text("Mon prochaine événement")
                             .modifier(Head1())
                         
-                        EventListRowView(myEvent: myNextEvent(user: currentUser))
+                        EventListRowView(myEvent: myNextEvent(user: user))
                             .cornerRadius(8)
                     }
                     .padding(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
@@ -179,7 +150,7 @@ struct ProfilView: View {
                         
                         ScrollView(.horizontal) {
                             HStack(spacing: 16) {
-                                ForEach(currentUser.media, id: \.self) { media in
+                                ForEach(user.media, id: \.self) { media in
                                     Image(media)
                                         .resizable()
                                         .frame(width: 120, height: 120)
@@ -195,13 +166,10 @@ struct ProfilView: View {
             }
         }
     }
-}
 
-struct ProfilView_Previews: PreviewProvider {
+
+struct OtherUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        //let userViewModel = UserViewModel(currentUser: myUser)
-        
-        ProfilView(currentUser: myUser, eventsList: EventsViewModel())
-        //.environmentObject(userViewModel) // Provide the UserViewModel as an environment object
+        OtherUserProfileView(user: userAlexandre, eventsList: EventsViewModel())
     }
 }

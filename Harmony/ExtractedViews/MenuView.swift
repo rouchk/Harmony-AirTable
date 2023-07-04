@@ -43,7 +43,7 @@ struct MenuView: View {
                     Text("Messages")
                 }
                 
-                ProfilView(currentUser: myUser)
+                ProfilView(currentUser: myUser, eventsList: EventsViewModel())
                     .tabItem {
                     Image(systemName: "person")
                             .environment(\.symbolVariants, .none)

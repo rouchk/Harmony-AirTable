@@ -79,7 +79,11 @@ struct DetailEventView: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(event.team) { teamMate in
-                                    MyTeamView(teamMate: teamMate)
+                                    NavigationLink {
+                                        OtherUserProfileView(user: teamMate, eventsList: EventsViewModel())
+                                    } label: {
+                                        MyTeamView(teamMate: teamMate)
+                                    }
                                 }
                             }
                             .padding(.leading, 24)
@@ -97,7 +101,12 @@ struct DetailEventView: View {
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(event.listParticipant) { participant in
-                                ParticipantsView(participant: participant)
+                                
+                                NavigationLink {
+                                    OtherUserProfileView(user: participant, eventsList: EventsViewModel())
+                                } label: {
+                                    ParticipantsView(participant: participant)
+                                }
                             }
                         }
                         .padding(.leading, 24)

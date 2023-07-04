@@ -101,7 +101,11 @@ struct DetailCommunityView: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(community.hosts) { host in
-                                    IconUserView(icon: host.photo, isConnected: host.isConnected)
+                                    NavigationLink {
+                                        OtherUserProfileView(user: host, eventsList: EventsViewModel())
+                                    } label: {
+                                        IconUserView(icon: host.photo, isConnected: host.isConnected)
+                                    }
                                 }
                             }
                             .frame(height: 52)
@@ -116,8 +120,12 @@ struct DetailCommunityView: View {
                             .modifier(Head1())
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(community.members) { host in
-                                    IconUserView(icon: host.photo, isConnected: host.isConnected)
+                                ForEach(community.members) { member in
+                                    NavigationLink {
+                                        OtherUserProfileView(user: member, eventsList: EventsViewModel())
+                                    } label: {
+                                        IconUserView(icon: member.photo, isConnected: member.isConnected)
+                                    }
                                 }
                             }
                             .frame(height: 52)

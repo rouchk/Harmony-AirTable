@@ -16,11 +16,15 @@ struct NewsViewModel: View {
         
         VStack{
             HStack{
-                Image(news.author.photo)
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Circle())
-                    .frame(height: 40)
+                NavigationLink {
+                    OtherUserProfileView(user: news.author, eventsList: EventsViewModel())
+                } label: {
+                    Image(news.author.photo)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                        .frame(height: 40)
+                }
                 
                 VStack{
                     Text(news.community.name)

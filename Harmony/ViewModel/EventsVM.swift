@@ -152,19 +152,19 @@ class EventsViewModel: ObservableObject {
 }
 
 
-var eventMarie = Event(
-    title: "Quiz Culture générale du Japon",
-    isOnline: true,
-    date: Date(timeIntervalSince1970: 1688722200),
-    address: nil,
-    listParticipant: [userAlexandre, userMarie, userTom, userThomas, userSonia, userMax, userAdeline, userKelian],
-    detail: "Testez vos connaissances sur l'Histoire du Japon !",
-    minParticipants: 12,
-    photo: "temple",
-    team: [userMarie],
-    comments: [Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
-    community: culturejaponaise
-)
+//var eventMarie = Event(
+//    title: "Quiz Culture générale du Japon",
+//    isOnline: true,
+//    date: Date(timeIntervalSince1970: 1688722200),
+//    address: nil,
+//    listParticipant: [userAlexandre, userMarie, userTom, userThomas, userSonia, userMax, userAdeline, userKelian],
+//    detail: "Testez vos connaissances sur l'Histoire du Japon !",
+//    minParticipants: 12,
+//    photo: "temple",
+//    team: [userMarie],
+//    comments: [Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
+//    community: culturejaponaise
+//)
 
 
 // -------- Ci-dessous, à supprimer après avoir mis en place les filtres sur EventView

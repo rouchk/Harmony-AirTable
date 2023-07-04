@@ -49,18 +49,24 @@ struct DetailNewsView: View {
                     } .modifier(Normal())
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
-                    HStack{
-                        Image(news.author.photo)
-                            .resizable()
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .frame(height: 40)
+                    
+                    NavigationLink {
+                        OtherUserProfileView(user: news.author, eventsList: EventsViewModel())
+                    } label: {
                         HStack{
-                            Text("Par")
-                            Text(news.author.pseudo)
-                        } .frame(maxWidth: .infinity, alignment: .leading)
-                            .modifier(Head2())
+                            Image(news.author.photo)
+                                .resizable()
+                                .scaledToFit()
+                                .clipShape(Circle())
+                                .frame(height: 40)
+                            HStack{
+                                Text("Par")
+                                Text(news.author.pseudo)
+                            } .frame(maxWidth: .infinity, alignment: .leading)
+                                .modifier(Head2())
+                        }
                     }
+                    
                     Text("Publié le 12 juin 2023")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .modifier(Normal())
