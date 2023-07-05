@@ -18,7 +18,6 @@ struct CommentsView: View {
     
     var body: some View {
         ScrollView {
-            Section {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack{
                         Spacer()
@@ -33,16 +32,12 @@ struct CommentsView: View {
                     } //fin foreach
                 } //fin vstack
                 .padding(.horizontal, 24)
-                
                 VStack{
                     
                     WriteCommentFieldNewsView(myProfil: myProfil, newContent: newContent, news: news)
-//                        .frame(width: 390, height: 60)
-                    
                 }
                 
                 
-            }//fin section commentaire
             
         }
     }
@@ -65,6 +60,8 @@ struct CommentPostView: View {
     var body: some View {
         
         
+        Divider()
+//                    .padding(.bottom)
         HStack {
             Image(comments.user.photo)
                 .resizable()
@@ -72,12 +69,7 @@ struct CommentPostView: View {
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
             
-            Spacer()
-            
             VStack(alignment: .leading) {
-                
-                Divider()
-//                    .padding(.bottom)
                 
                 Spacer()
                 
@@ -111,7 +103,7 @@ struct CommentPostView: View {
                     .frame(width: 30)
             }
         }// fin hstack principale
-        .frame(height: 90)
+//        .frame(height: 60)
     } //finbody
     
     
@@ -136,11 +128,6 @@ struct NewCommentFieldView: View {
                 .frame(width: 32, height: 40)
                 .clipShape(Circle())
             
-//            TextField("Ecrire un commentaire", text: $newContent)
-//                .textFieldStyle(PlainTextFieldStyle())
-//                           .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8))
-//                                       .cornerRadius(16)
-//                                           .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.graySky))
             
             
             Button {

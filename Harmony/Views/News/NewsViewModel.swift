@@ -54,7 +54,7 @@ struct NewsViewModel: View {
                     showingSheet.toggle()
                 }, label: {
                     Image(systemName: "message")
-                    Text("3")
+                    Text("9")
                 })
                 .sheet(isPresented: $showingSheet) {
                     CommentsView(news: news)

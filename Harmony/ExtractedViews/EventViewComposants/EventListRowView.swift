@@ -50,7 +50,7 @@ struct EventListRowView: View {
                             MapPinView() // icon Map Pin
                             }
                     
-                        Text(myEvent.address?.city ?? "En ligne")
+                        Text(myEvent.address?.city ?? "Evénement en ligne")
                     }
                     .modifier(HeadGray())
                 } else {

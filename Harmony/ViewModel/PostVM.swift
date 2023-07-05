@@ -16,7 +16,9 @@ class Post:ObservableObject {
         PostComment(user: userKelian, content: "Je viendrai de Marseille. Quequ'un pourrait me dire comment s'y rendre ?", date: Date(timeIntervalSince1970: 1687368600), comlikes: 32),
         PostComment(user: userMarie, content: "Super !", date: Date(timeIntervalSince1970: 1687522965), comlikes: 1),
         PostComment(user: userJohan, content: "@Sonia C'est super la pluie.", date: Date(timeIntervalSince1970: 1687408200), comlikes: 106),
-        PostComment(user: userMax, content: "🌧️", date: Date(timeIntervalSince1970: 1687368600), comlikes: 87)], community: culturehawaienne, commentLikes: [53,29,140,8]),
+        PostComment(user: userMax, content: "🌧️", date: Date(timeIntervalSince1970: 1687368600), comlikes: 87),
+        PostComment(user: userMarie, content: "Super !", date: Date(timeIntervalSince1970: 1687522965), comlikes: 1),
+        PostComment(user: userJohan, content: "@Sonia C'est super la pluie.", date: Date(timeIntervalSince1970: 1687408200), comlikes: 106)], community: culturehawaienne, commentLikes: [53,29,140,8]),
 //------------------------------------------------------------- personne ----------------------------------------------------
        
        News(title: "Le Blind-Tasting c'est Bien passé!!!!", photo: "temple", author: userMarie, content: "Le Blind-Tasting organisé par la communauté japonaise c'est Bien passé! Nous avons eu des bons retours.", publishDate: Date(), like: 1, comments: [
@@ -47,7 +49,11 @@ var exemplePost = News(title: "Fête de la musique - danse hawaïenne à Lille",
     PostComment(user: userYuko, content: "@Sonia Prochaine fois on ira ensemble, c'est un évenement à ne pas rater 👍🏼", date: Date(timeIntervalSince1970: 1687408200), comlikes: 98),
     PostComment(user: userSonia, content: "J'aurais trop aimé avoir participé, mais je ne voulais pas aller seule 😿", date: Date(timeIntervalSince1970: 1687368600), comlikes: 33),
     PostComment(user: userMax, content: "J'ai adoré cette événement, j'ai hâte pour le prochain. Continuez Comme ça!", date: Date(timeIntervalSince1970: 1687522965), comlikes: 7),
-    PostComment(user: userJohan, content: "@Sonia Prochaine fois on ira ensemble, c'est un évenement à ne pas rater 👍🏼", date: Date(timeIntervalSince1970: 1687408200), comlikes: 4)], community: culturejaponaise, commentLikes: [53,29,140,8])
+    PostComment(user: userJohan, content: "@Sonia Prochaine fois on ira ensemble, c'est un évenement à ne pas rater 👍🏼", date: Date(timeIntervalSince1970: 1687408200), comlikes: 4),
+    PostComment(user: userSonia, content: "J'aurais trop aimé avoir participé, mais je ne voulais pas aller seule 😿", date: Date(timeIntervalSince1970: 1687368600), comlikes: 33),
+    PostComment(user: userMax, content: "J'ai adoré cette événement, j'ai hâte pour le prochain. Continuez Comme ça!", date: Date(timeIntervalSince1970: 1687522965), comlikes: 7),
+    PostComment(user: userJohan, content: "@Sonia Prochaine fois on ira ensemble, c'est un évenement à ne pas rater 👍🏼", date: Date(timeIntervalSince1970: 1687408200), comlikes: 4)
+], community: culturejaponaise, commentLikes: [53,29,140,8])
 
 
 //class NumberOfLikes:ObservableObject{

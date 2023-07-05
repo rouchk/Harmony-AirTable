@@ -25,126 +25,41 @@ class UsersVM : ObservableObject {
     func removeUser (user: User) {
         self.users = self.users.filter { $0 !== user }
     }
-    
-//    func fetchUsers() async {
-//        let apikey = "key7FutjOPCf6ezGz"
-//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/") {
-//            do {
-//                var request = URLRequest(url: url)
-//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
-//
-//                let (data, _) = try await URLSession.shared.data(for: request)
-//                if let decodedResponse = try? JSONDecoder().decode(UserResponse.self, from: data) {
-//                    print("TESSST")
-//                    users = decodedResponse.users
-//                } else {
-//                    print("PAS BONNN")
-//                }
-//            } catch {
-//                print("Invalid data")
-//            }
-//        }
-//    }
-//
-//    func addUser(user: User) async {
-//        let record = RecordUser(fields: user)
-//
-//        let apikey = "key7FutjOPCf6ezGz"
-//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/") {
-//            do {
-//                var request = URLRequest(url: url)
-//                request.httpMethod = "POST"
-//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
-//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//                let jsonPig = try JSONEncoder().encode(record)
-//
-//                request.httpBody = jsonPig
-//
-//                let (_, response) = try await URLSession.shared.data(for: request)
-//
-//                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
-//                    print("All is ok")
-//                    await fetchUsers()
-//                }
-//
-//            } catch {
-//                print("Invalid data")
-//            }
-//        }
-//    }
-//
-//    func delUser (id: String) async  {
-//        var deleted: Bool = false
-//
-//        let apikey = "key7FutjOPCf6ezGz"
-//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/" + id) {
-//            do {
-//                var request = URLRequest(url: url)
-//                request.httpMethod = "DELETE"
-//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
-//
-//                let (data, _) = try await URLSession.shared.data(for: request)
-//
-//                if let decodedResponse = try? JSONDecoder().decode(RecordUser.self, from: data) {
-//                    print("TESSST")
-//                    deleted = decodedResponse.deleted!
-//
-//                    if (deleted) {
-//                        print("DEL")
-//                    }
-//                } else {
-//                    print("PAS BONNN")
-//                }
-//            } catch {
-//                print("Invalid data")
-//            }
-//        }
-//    }
-//
-//    func updateUser (user: User) async {
-//        let record = RecordUser(fields: user)
-//
-//        let apikey = "key7FutjOPCf6ezGz"
-//
-//        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblf1zycTZfeMXAjY/" + user.id) {
-//            do {
-//                var request = URLRequest(url: url)
-//                request.httpMethod = "PATCH"
-//                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
-//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//                let jsonPig = try JSONEncoder().encode(record)
-//
-//                request.httpBody = jsonPig
-//
-//                let (_, response) = try await URLSession.shared.data(for: request)
-//
-//                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
-//                    print("All is ok")
-//                    await fetchUsers()
-//                }
-//
-//            } catch {
-//                print("Invalid data")
-//            }
-//        }
-//    }
 }
 
-var userSonia: User = User(pseudo: "Sonia", photo: "sonia", coverPhoto: "sonia", city: "Marseille", language: [Language.french, Language.english], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
+var userSonia: User = User(pseudo: "Sonia", photo: "sonia", coverPhoto: "beach", city: "Marseille",
+                           language: [Language.french, Language.english], media: ["japon"],
+                           about: "Bonjour à tous ! Je suis Sonia, une passionnée de pâtisserie basée à Marseille. J'adore créer de délicieux gâteaux et desserts. Rejoignez-moi dans l'univers sucré de la pâtisserie où je partage mes recettes et mes créations gourmandes avec vous !",
+                           isConnected: true, myContacts: [])
 
-var userTom: User = User(pseudo: "Tom", photo: "tomy", coverPhoto: "temple", city: "Marseille", language: [Language.french, Language.english], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
+var userTom: User = User(pseudo: "Tom", photo: "tomy", coverPhoto: "temple", city: "Marseille",
+                         language: [Language.french, Language.english], media: ["japon"], about: "Hey, moi c'est Tom, originaire de Seattle. Je suis complètement immergé dans l'univers des mangas et des jeux vidéo.",
+                         isConnected: true, myContacts: [])
 
-var userMax: User = User(pseudo: "Max", photo: "Max", coverPhoto: "", city: "Lille", language: [Language.french, Language.portuguese], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
+var userMax: User = User(pseudo: "Max", photo: "Max", coverPhoto: "portugal", city: "Lille",
+                         language: [Language.french, Language.portuguese], media: ["japon"],
+                         about: "Salut ! Je m'appelle Max et je suis un amateur d'aventures en plein air. Randonnée, escalade, camping, j'adore explorer la nature et me laisser emporter par sa beauté.",
+                         isConnected: true, myContacts: [])
 
-var userThomas: User = User(pseudo: "Thomas", photo: "thomas", coverPhoto: "hawai2", city: "Paris", language: [Language.french, Language.japanese], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [userMax])
+var userThomas: User = User(pseudo: "Thomas", photo: "thomas", coverPhoto: "hawai2", city: "Paris",
+                            language: [Language.french, Language.japanese], media: ["japon"],
+                            about: "Konnichiwa ! Je m'appelle Thomas et je suis un grand amateur du Japon, en particulier de sa cuisine exquise et de ses boissons raffinées comme le saké et le whisky. Yoroshiku !",
+                            isConnected: true, myContacts: [userMax])
 
-var userYuko: User = User(pseudo: "Yuko", photo: "Yuko", coverPhoto: "", city: "Lyon", language: [Language.french, Language.japanese], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
+var userYuko: User = User(pseudo: "Yuko", photo: "Yuko", coverPhoto: "grapes", city: "Lyon",
+                          language: [Language.french, Language.japanese], media: ["japon"],
+                          about: "Je suis Yuko, épicurienne qui apprécie l'art de la cuisine et les plaisirs de la dégustation. Mon palais s'émerveille particulièrement des vins français, qui apportent une dimension unique à chaque repas.",
+                          isConnected: true, myContacts: [])
 
-var userKelian: User = User(pseudo: "Kelian", photo: "Kelian", coverPhoto: "", city: "Toulouse", language: [Language.french, Language.japanese], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
+var userKelian: User = User(pseudo: "Kelian", photo: "Kelian", coverPhoto: "car2", city: "Toulouse",
+                            language: [Language.french, Language.japanese], media: ["japon"],
+                            about: "Salut à tous ! Je suis Kelian, un passionné de l'automobile depuis mon plus jeune âge. Les moteurs vrombissants, les lignes élégantes et la mécanique sophistiquée me fascinent. Rejoignez-moi pour plonger dans le monde palpitant des voitures et partager ensemble cette passion qui fait battre mon cœur !",
+                            isConnected: true, myContacts: [])
 
-var userAdeline: User = User(pseudo: "Adeline", photo: "Adeline", coverPhoto: "", city: "Lyon", language: [Language.french, Language.japanese], media: ["japon"], about: "Hello.", isConnected: true, myContacts: [])
+var userAdeline: User = User(pseudo: "Adeline", photo: "Adeline", coverPhoto: "butterflies", city: "Lyon",
+                             language: [Language.french, Language.japanese], media: ["japon"],
+                             about: "Bonjour ! Je m'appelle Adeline et j'ai une passion pour l'art et la beauté de la nature. Lyon, ma ville natale, est une source d'inspiration inépuisable pour moi.",
+                             isConnected: true, myContacts: [])
 
 var userMarie = User(
     pseudo: "Marie", photo: "Marie", coverPhoto: "hawai2",
@@ -156,15 +71,30 @@ var userMarie = User(
     events: [],
     conversations: [conversation1, conversation2, conversation3], myContacts: [userSonia, userThomas, userTom])
 
-var userJohan = User(pseudo: "Johan", photo: "Johan", coverPhoto: "CoverPhoto2", city: "Paris", language: [Language.english, Language.japanese, Language.french], media: ["Media1", "Media2"], about: "Lorem ipsum dolor sit amet. Et optio quasi non explicabo itaque ea vero neque ea reprehenderit dolorem qui modi voluptatem. Aut aspernatur quibusdam in quam optio cum dignissimos dolor qui provident unde. Quo nihil quia aut optio officiis in praesentium voluptatum. Et expedita rerum ea ducimus necessitatibus qui iste quis non dolores consequatur aut voluptatem velit?", isConnected: false, myContacts: [])
+var userJohan = User(pseudo: "Johan", photo: "Johan", coverPhoto: "shrine", city: "Paris",
+                     language: [Language.english, Language.japanese, Language.french], media: ["Media1", "Media2"],
+                     about: "Bonjour à tous ! Je suis Johan, un épicurien passionné par la découverte de nouvelles saveurs à travers le monde. Entre gourmandises et aventures culinaires, je vous emmène avec moi pour un voyage gustatif sans frontières !",
+                     isConnected: false, myContacts: [])
 
-var userAlexandre = User(pseudo: "Alexandre", photo: "Jeremy", coverPhoto: "Normandie", city: "Londres", language: [Language.english, Language.french], media: ["Media1", "Media2"], about: "Lorem ipsum dolor sit amet. Et optio quasi non explicabo itaque ea vero neque ea reprehenderit dolorem qui modi voluptatem. Aut aspernatur quibusdam in quam optio cum dignissimos dolor qui provident unde. Quo nihil quia aut optio officiis in praesentium voluptatum. Et expedita rerum ea ducimus necessitatibus qui iste quis non dolores consequatur aut voluptatem velit?", isConnected: true, myContacts: [])
+var userAlexandre = User(pseudo: "Alexandre", photo: "Jeremy", coverPhoto: "car", city: "Londres",
+                         language: [Language.english, Language.french], media: ["Media1", "Media2"],
+                         about: "Salut, je suis Alexandre, passionné par l'univers automobile. Mon amour pour les voitures est une source infinie d'inspiration et de créativité. Rejoignez-moi pour explorer ensemble cet univers passionnant !",
+                         isConnected: true, myContacts: [])
 
-var userElodie = User(pseudo: "Elodie", photo: "Elodie", coverPhoto: "CoverPhoto4", city: "Metz", language: [Language.english, Language.french, Language.portuguese], media: ["Media1", "Media2"], about: "Lorem ipsum dolor sit amet. Et optio quasi non explicabo itaque ea vero neque ea reprehenderit dolorem qui modi voluptatem. Aut aspernatur quibusdam in quam optio cum dignissimos dolor qui provident unde. Quo nihil quia aut optio officiis in praesentium voluptatum. Et expedita rerum ea ducimus necessitatibus qui iste quis non dolores consequatur aut voluptatem velit?", isConnected: false, myContacts: [])
+var userElodie = User(pseudo: "Elodie", photo: "Elodie", coverPhoto: "mountains", city: "Metz",
+                      language: [Language.english, Language.french, Language.portuguese], media: ["Media1", "Media2"],
+                      about: "Salut à tous ! Je suis Elodie, une aventurière originaire de Metz. Je parle couramment le français et l'anglais, et j'ai soif de voyages et d'explorations. Ensemble, partons à la découverte du monde et créons des souvenirs inoubliables !",
+                      isConnected: false, myContacts: [])
 
-var userHildegarde = User(pseudo: "Hildegarde", photo: "Hildegarde", coverPhoto: "CoverPhoto5", city: "Berlin", language: [Language.english, Language.deutsch, Language.portuguese], media: ["Media1", "Media2"], about: "Lorem ipsum dolor sit amet. Et optio quasi non explicabo itaque ea vero neque ea reprehenderit dolorem qui modi voluptatem. Aut aspernatur quibusdam in quam optio cum dignissimos dolor qui provident unde. Quo nihil quia aut optio officiis in praesentium voluptatum. Et expedita rerum ea ducimus necessitatibus qui iste quis non dolores consequatur aut voluptatem velit?", isConnected: false, myContacts: [])
+var userHildegarde = User(pseudo: "Hildegarde", photo: "Hildegarde", coverPhoto: "lavender", city: "Berlin",
+                          language: [Language.english, Language.deutsch, Language.portuguese], media: ["Media1", "Media2"],
+                          about: "Guten Tag ! Je m'appelle Hildegarde et je suis Allemande. La nature, les fleurs et la France sont mes plus grandes sources d'inspiration.",
+                          isConnected: false, myContacts: [])
 
-var userJeanChristophe: User = User(pseudo: "Jean-Christophe", photo: "Hawai1", coverPhoto: "", city: "Lyon", language: [Language.french, Language.english], media: ["japon"], about: "Hello.", isConnected: false, myContacts: [])
+var userJeanChristophe: User = User(pseudo: "Jean-Christophe", photo: "jc", coverPhoto: "owl", city: "Lyon",
+                                    language: [Language.french, Language.english], media: ["japon"],
+                                    about: "Salut ! Je suis Jean-Christophe, passionné par les cultures traditionnelles et complètement dingue des hibous. Rejoignez-moi pour explorer le monde fascinant de la tradition et de la sagesse nocturne des chouettes !",
+                                    isConnected: false, myContacts: [])
 
 var myUser = userMarie
 

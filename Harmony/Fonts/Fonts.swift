@@ -10,34 +10,34 @@ import SwiftUI
 struct Head0: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistBold", size: 28))
+            .font(.custom("Urbanist", size: 28))
             .foregroundColor(Color.sapphire)
-//            .fontWeight(.bold)
+            .fontWeight(.bold)
     }
 }
 
 struct Head1: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistSemiBold", size: 20))
+            .font(.custom("Urbanist", size: 20))
             .foregroundColor(Color("Sapphire"))
-//            .fontWeight(.bold)
+            .fontWeight(.bold)
     }
 }
 
 struct Head2: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistMedium", size: 18))
+            .font(.custom("Urbanist", size: 18))
             .foregroundColor(Color("Sapphire"))
-//            .fontWeight(.medium)
+            .fontWeight(.medium)
     }
 }
 
 struct Head3: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistRegular", size: 18))
+            .font(.custom("Urbanist", size: 18))
             .foregroundColor(Color("DarkPeriwinkle"))
     }
 }
@@ -45,25 +45,25 @@ struct Head3: ViewModifier {
 struct HeadGray: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistMedium", size: 18))
+            .font(.custom("Urbanist", size: 18))
             .foregroundColor(Color("DarkGray"))
-//            .fontWeight(.medium)
+            .fontWeight(.medium)
     }
 }
 
 struct MinHead1: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistBold", size: 14))
+            .font(.custom("Urbanist", size: 14))
             .foregroundColor(Color("Sapphire"))
-//            .fontWeight(.bold)
+            .fontWeight(.bold)
     }
 }
 
 struct MinHead3: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistRegular", size: 10))
+            .font(.custom("Urbanist", size: 10))
             .foregroundColor(Color("DarkPeriwinkle"))
     }
 }
@@ -71,34 +71,34 @@ struct MinHead3: ViewModifier {
 struct MinHeadGray: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistMedium", size: 12))
+            .font(.custom("Urbanist", size: 12))
             .foregroundColor(Color("DarkGray"))
-//            .fontWeight(.medium)
+            .fontWeight(.medium)
     }
 }
 
 struct SmallGray: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistMedium", size: 11))
+            .font(.custom("Urbanist", size: 11))
             .foregroundColor(Color("DarkGray"))
-//            .fontWeight(.medium)
+            .fontWeight(.medium)
     }
 }
 
 struct Small: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistMedium", size: 11))
+            .font(.custom("Urbanist", size: 11))
             .foregroundColor(Color("Midnight"))
-//            .fontWeight(.medium)
+            .fontWeight(.medium)
     }
 }
 
 struct Normal: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistRegular", size: 16))
+            .font(.custom("Urbanist", size: 16))
             .foregroundColor(Color("Midnight"))
     }
 }
@@ -106,7 +106,7 @@ struct Normal: ViewModifier {
 struct NormalWhite: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistRegular", size: 16))
+            .font(.custom("Urbanist", size: 16))
             .foregroundColor(.white)
     }
 }
@@ -114,6 +114,7 @@ struct NormalWhite: ViewModifier {
 struct Italic: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.custom("UrbanistItalic", size: 16))
+            .font(.custom("Urbanist", size: 16))
+            .italic()
     }
 }

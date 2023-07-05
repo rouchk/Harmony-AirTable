@@ -24,7 +24,7 @@ struct DetailCommunityView: View {
     var eventFilter: [Event] {
         return eventsList.eventsList.filter { event in
             (community == event.community) && (event.date > Date())
-        }
+        }.sorted(by: { $0.date < $1.date })
     }
     
     @State var showSheet = false

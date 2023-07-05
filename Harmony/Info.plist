@@ -10,9 +10,6 @@
 	<array>
 		<string>Urbanist.ttf</string>
 		<string>UrbanistItalic.ttf</string>
-		<string>UrbanistRegular.ttf</string>
-		<string>UrbanistSemiBold.ttf</string>
-		<string>UrbanistMedium.ttf</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>

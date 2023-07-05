@@ -6,12 +6,24 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct CreateEvenementView: View {
     
     @ObservedObject var currentUser: User
-    @State var newEvent : String = ""
-    @State var newDate : String = ""
+    
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+    @State var image: UIImage?
+    
+    @State var newEventName : String = ""
+    @State var from : Date = Date.now.addingTimeInterval(24.0 * 3600.0)
+    @State var to : Date = Date.now.addingTimeInterval(24.0 * 3600.0 + 7200.0)
+    @State var isOnline: Bool = false
+    @State var newEventPlaceName : String = ""
+    @State var newEventAddress : String = ""
+    @State var newEventCity : String = ""
+    
     @State var showConfirmationMessage = false
     @State var moveToExploreView = false
     
@@ -23,63 +35,80 @@ struct CreateEvenementView: View {
                 .padding(.vertical, 16)
             
             
-            ZStack {
-                Rectangle()
-                    .frame(width: 390, height: 150)
-                    .foregroundColor(Color.sky)
-                
-                
-                Rectangle()
-                    .frame(width: 300, height: 60)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.graySky)
-                    .offset(x:0 , y:0)
-                HStack {
-                    Image(systemName:"plus")
-                    Text("Ajouter une photo de couverture")
+            if let selectedImageData,
+               let uiImage = UIImage(data: selectedImageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .frame(width: 390, height: 200)
+            } else {
+                ZStack {
+                    Rectangle()
+                        .frame(width: 390, height: 200)
+                        .foregroundColor(Color.sky.opacity(0.7))
                     
-                }// End Hstack
-            } // End Zstack
-            List {
-                Text("Nom de l'événement")
-                
-                TextField("Nom de l'événement", text: $newEvent)
-                
-                Text ("Date de début")
-                
-                
-                TextField("Date de debut", text: $newDate)
-                
-                HStack {
-                    Text("Evénement en ligne")
-                    //                         .padding()
-                    Spacer()
-                    Image(systemName:"square")
-                    //                    .offset(x:100 ,y:0)
-                    
+                    PhotosPicker(
+                        selection: $selectedItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            HStack {
+                                Image(systemName:"plus")
+                                Text("Ajouter une photo de couverture")
+                            }
+                            .modifier(Normal())
+                        }
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                // Retrieve selected asset in the form of Data
+                                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
+                            }
+                        }
+                }
+            }
+            
+            
+            Form {
+                Section(header: Text("Nom de l'événement").textCase(nil)) {
+                    TextField("Choisissez un nom explicite.", text: $newEventName)
                 }
                 
-                Text("Lieu")
-                TextField("Lieu de l'événement", text: $newEvent)
+                Section(header: Text ("Date et heure").textCase(nil)) {
+                    DatePicker("Début", selection: $from)
+                        .datePickerStyle(.compact)
+                        .modifier(Normal())
+                    
+                    DatePicker("Fin", selection: $to)
+                        .datePickerStyle(.compact)
+                        .modifier(Normal())
+                }
                 
+                Section(header: Text("Lieu").textCase(nil)) {
+                    Toggle(isOn: $isOnline) {
+                        Text("Evénement en ligne")
+                            .modifier(Normal())
+                    }
+                    TextField("Nom du lieu", text: $newEventPlaceName)
+                    TextField("Adresse", text: $newEventAddress)
+                    TextField("Ville et arrondissement", text: $newEventCity)
+                }
                 
-                Text("Description")
-                TextField("Déscription de l'événement", text: $newEvent)
-                //                    .padding()
-                //                    .frame(width: 100,height: 100)
-            } //End List
-            .padding()
-            .listStyle(.plain)
+                Section(header: Text("Description").textCase(nil)) {
+                    TextField("Expliquez les détails de l'événement.", text: $newEventName)
+                }
+            } //End Form
+            .tint(Color.darkPeriwinkle)
+            .scrollContentBackground(.hidden)
+            .font(.custom("UrbanistRegular", size: 16))
+            .foregroundColor(Color("DarkPeriwinkle"))
             
             Button {
                 showConfirmationMessage = true
-//                showSheet.toggle()
             } label: {
                 Text("Proposer l'événement")
-                //                    .modifier(Head1())
                     .frame(width: 300, height: 44)
                     .foregroundColor(Color.white)
-                .font(.custom("Urbanist", size: 20))
+                    .font(.custom("UrbanistSemibold", size: 20))
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.darkPeriwinkle)
@@ -87,19 +116,14 @@ struct CreateEvenementView: View {
             
             .alert("Merci !", isPresented: $showConfirmationMessage) {
                 Button("OK") {
-                 moveToExploreView = true
-//                    showConfirmationMessage = false
-//                    showSheet.toggle()
+                    moveToExploreView = true
                 }
             } message: {
                 Text("Votre proposition a bien été transmise aux hôtes de la communauté. Elle sera examinée dans les mailleurs délais.")
             }
         }
-//        .padding()
         .navigationDestination(isPresented: $moveToExploreView, destination: {ExploreView(currentUser: currentUser)})
     }
-    
-    
 }
 
 

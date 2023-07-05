@@ -74,6 +74,7 @@ struct OtherUserProfileView: View {
                         Text(user.about)
                             .modifier(Normal())
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
                     
                     
@@ -86,10 +87,14 @@ struct OtherUserProfileView: View {
                             HStack(spacing: 8) {
                                 ForEach(user.language, id: \.self) { language in
                                     Text(language.rawValue)
-                                        .padding(8)
-                                        .background(Color.darkPeriwinkle)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
+                                        .font(.custom("UrbanistRegular", size: 16))
+                                        .padding(12)
+                                        .overlay(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                .stroke(lineWidth: 4)
+                                            )
+                                        .cornerRadius(8)
+                                        .foregroundColor(Color.darkPeriwinkle)
                                 }
                             }
                         }
@@ -106,25 +111,29 @@ struct OtherUserProfileView: View {
                             HStack(spacing: 16) {
                                 ForEach(myCommunities(user: user)) { community in
                                     
-                                    ZStack(alignment: .top) {
-                                        Rectangle()
-                                            .fill(.white)
-                                        
-                                        VStack {
-                                            Image(community.photo)
-                                                .resizable()
-                                                .frame(width: 136, height: 96)
-                                                .scaledToFill()
-                                            //                                            .border(.red)
-                                            Text(community.name)
+                                    NavigationLink {
+                                        DetailCommunityView(community: community, eventsList: EventsViewModel())
+                                    } label: {
+                                        ZStack(alignment: .top) {
+                                            Rectangle()
+                                                .fill(.white)
                                             
-                                                .font(.custom("UrbanistMedium", size: 16))
-                                                .foregroundColor(Color("Sapphire"))
-                                                .frame(height: 52, alignment: .top)
+                                            VStack {
+                                                Image(community.photo)
+                                                    .resizable()
+                                                    .frame(width: 136, height: 96)
+                                                    .scaledToFill()
+
+                                                Text(community.name)
+                                                
+                                                    .font(.custom("UrbanistMedium", size: 16))
+                                                    .foregroundColor(Color("Sapphire"))
+                                                    .frame(height: 52, alignment: .top)
+                                            }
+                                            .frame(width: 136, height: 160)
                                         }
-                                        .frame(width: 136, height: 160)
+                                        .cornerRadius(8)
                                     }
-                                    .cornerRadius(8)
                                 }
                             }
                         }
@@ -134,11 +143,17 @@ struct OtherUserProfileView: View {
                     
                     // --------------- Section : Mon prochaine événement ---------------
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Mon prochaine événement")
+                        Text("Mon prochain événement")
                             .modifier(Head1())
                         
-                        EventListRowView(myEvent: myNextEvent(user: user))
-                            .cornerRadius(8)
+                        NavigationLink {
+                            DetailEventView(event: myNextEvent(user: user))
+                        } label: {
+                            EventListRowView(myEvent: myNextEvent(user: user))
+                                .cornerRadius(8)
+                        }
+
+                        
                     }
                     .padding(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
                     
@@ -170,6 +185,6 @@ struct OtherUserProfileView: View {
 
 struct OtherUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        OtherUserProfileView(user: userAlexandre, eventsList: EventsViewModel())
+        OtherUserProfileView(user: userJeanChristophe, eventsList: EventsViewModel())
     }
 }

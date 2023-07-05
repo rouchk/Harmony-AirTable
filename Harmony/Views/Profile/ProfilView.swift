@@ -76,11 +76,12 @@ struct ProfilView: View {
                             isEditingProfile = true // Activate the navigation
                         } label: {
                             Image(systemName: "square.and.pencil")
+                                .font(.title3)
                             Text("Modifier le Profil")
                                 .padding(4)
                         }
                         .buttonStyle(.borderedProminent)
-                        .tint(Color.graySky.opacity(0.4))
+                        .tint(Color.graySky.opacity(0.3))
                         .cornerRadius(8)
                         .font(.custom("UrbanistSemiBold", size: 16))
                         .foregroundColor(Color.darkPeriwinkle)
@@ -103,6 +104,7 @@ struct ProfilView: View {
                         Text(currentUser.about)
                             .modifier(Normal())
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
                     
                     
@@ -115,10 +117,14 @@ struct ProfilView: View {
                             HStack(spacing: 8) {
                                 ForEach(currentUser.language, id: \.self) { language in
                                     Text(language.rawValue)
-                                        .padding(8)
-                                        .background(Color.darkPeriwinkle)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
+                                        .font(.custom("UrbanistRegular", size: 16))
+                                        .padding(12)
+                                        .overlay(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                .stroke(lineWidth: 4)
+                                            )
+                                        .cornerRadius(8)
+                                        .foregroundColor(Color.darkPeriwinkle)
                                 }
                             }
                         }
@@ -135,25 +141,29 @@ struct ProfilView: View {
                             HStack(spacing: 16) {
                                 ForEach(myCommunities(user: currentUser)) { community in
                                     
-                                    ZStack(alignment: .top) {
-                                        Rectangle()
-                                            .fill(.white)
-                                        
-                                        VStack {
-                                            Image(community.photo)
-                                                .resizable()
-                                                .frame(width: 136, height: 96)
-                                                .scaledToFill()
-                                            //                                            .border(.red)
-                                            Text(community.name)
+                                    NavigationLink {
+                                        DetailCommunityView(community: community, eventsList: EventsViewModel())
+                                    } label: {
+                                        ZStack(alignment: .top) {
+                                            Rectangle()
+                                                .fill(.white)
                                             
-                                                .font(.custom("UrbanistMedium", size: 16))
-                                                .foregroundColor(Color("Sapphire"))
-                                                .frame(height: 52, alignment: .top)
+                                            VStack {
+                                                Image(community.photo)
+                                                    .resizable()
+                                                    .frame(width: 136, height: 96)
+                                                    .scaledToFill()
+                                                //                                            .border(.red)
+                                                Text(community.name)
+                                                
+                                                    .font(.custom("UrbanistMedium", size: 16))
+                                                    .foregroundColor(Color("Sapphire"))
+                                                    .frame(height: 52, alignment: .top)
+                                            }
+                                            .frame(width: 136, height: 160)
                                         }
-                                        .frame(width: 136, height: 160)
+                                        .cornerRadius(8)
                                     }
-                                    .cornerRadius(8)
                                 }
                             }
                         }
@@ -163,11 +173,15 @@ struct ProfilView: View {
                     
                     // --------------- Section : Mon prochaine événement ---------------
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Mon prochaine événement")
+                        Text("Mon prochain événement")
                             .modifier(Head1())
                         
-                        EventListRowView(myEvent: myNextEvent(user: currentUser))
-                            .cornerRadius(8)
+                        NavigationLink {
+                            DetailEventView(event: myNextEvent(user: currentUser))
+                        } label: {
+                            EventListRowView(myEvent: myNextEvent(user: currentUser))
+                                .cornerRadius(8)
+                        }
                     }
                     .padding(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
                     

@@ -22,9 +22,11 @@ class EventsViewModel: ObservableObject {
             photo: "sake",
             team: [userTom, userMarie, userYuko],
             comments: [
-                Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965)),
-                       Comment(user: userYuko, content: "Si tu arrives à la Part-Dieu, prends le métro B jusqu'à Saxe Gambetta, puis métro D jusqu'à Bellecour. C'est à 2 minutes de la station.", date: Date(timeIntervalSince1970: 1687408200)),
-                       Comment(user: userSonia, content: "Je viendrai de Marseille. Quequ'un pourrait me dire comment s'y rendre ?", date: Date(timeIntervalSince1970: 1687368600))],
+                Comment(user: userTom, content: "J'adore les dégustations à l'aveugle ! Cet événement de blind tasting japonais semble passionnant. J'ai hâte de découvrir de nouveaux arômes et de tester mes papilles. #BlindTasting #SaveursJaponaises", date: Date(timeIntervalSince1970: 1687522965)),
+                Comment(user: userYuko, content: "Si tu arrives à la Part-Dieu, prends le métro B jusqu'à Saxe Gambetta, puis métro D jusqu'à Bellecour. C'est à 2 minutes de la station.", date: Date(timeIntervalSince1970: 1687408200)),
+                Comment(user: userSonia, content: "Je viendrai de Marseille. Quequ'un pourrait me dire comment s'y rendre ?", date: Date(timeIntervalSince1970: 1687368600)),
+                Comment(user: userKelian, content: "Quelle chance d'avoir l'opportunité de participer à un événement de blind tasting japonais ! J'ai hâte de tester ma capacité à identifier les caractéristiques uniques des sakés, whiskies et autres boissons japonaises.", date: Date(timeIntervalSince1970: 1687120417)),
+                Comment(user: userMarie, content: "En tant qu'amateur de la culture japonaise, je ne peux pas manquer cet événement de blind tasting.", date: Date(timeIntervalSince1970: 1686192007))],
             community: culturejaponaise
         ),
         
@@ -38,7 +40,9 @@ class EventsViewModel: ObservableObject {
             minParticipants: 12,
             photo: "temple",
             team: [userMarie],
-            comments: [Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
+            comments: [Comment(user: userAlexandre, content: "Je suis totalement d'accord ! J'adore la culture japonaise, c'est tellement riche et fascinant. Prêt à relever le défi !", date: Date(timeIntervalSince1970: 1687522965)),
+                       Comment(user: userTom, content: "Wow, ce quiz sur la culture japonaise semble intéressant ! Je suis prêt à tester mes connaissances et à en apprendre davantage.", date: Date(timeIntervalSince1970: 1687516807)),
+                      Comment(user: userThomas, content: "Je suis un grand fan de manga et d'anime japonais, mais je veux voir si mes connaissances vont au-delà de ces domaines. Prêt à découvrir ce quiz !", date: Date(timeIntervalSince1970: 1687426807))],
             community: culturejaponaise
         ),
         
@@ -52,8 +56,8 @@ class EventsViewModel: ObservableObject {
             minParticipants: 8,
             photo: "MyPhoto",
             team: [userTom, userYuko, userMarie],
-            comments: [Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965)),
-                       Comment(user: userSonia, content: "Je viendrai de Marseille. Quequ'un pourrait me dire comment s'y rendre ?", date: Date(timeIntervalSince1970: 1687368600))],
+            comments: [Comment(user: userTom, content: "Hâte de participer à cette initiation à la calligraphie japonaise ! J'ai déjà préparé mon carnet et mes pinceaux, prêt à laisser ma créativité s'exprimer ! ", date: Date(timeIntervalSince1970: 1687522965)),
+                       Comment(user: userSonia, content: "Je suis tellement excitée à l'idée de participer à cette initiation à la calligraphie japonaise ! J'ai déjà commencé à pratiquer quelques techniques de base et j'ai hâte de les perfectionner lors de cet événement. Vivement la semaine prochaine !", date: Date(timeIntervalSince1970: 1687368600))],
             community: culturejaponaise
         ),
         
@@ -68,7 +72,8 @@ class EventsViewModel: ObservableObject {
             photo: "petanque",
             team: [userTom, userYuko, userMarie],
             comments: [
-                Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
+                Comment(user: userTom, content: "Je suis excité de participer à l'événement d'initiation à la pétanque ! Une opportunité de découvrir ce sport, passer du bon temps en plein air et rencontrer de nouvelles personnes.", date: Date(timeIntervalSince1970: 1687522965)),
+            Comment(user: userSonia, content: "J'attends avec impatience cet événement d'initiation à la pétanque ! Une occasion de s'amuser en famille ou entre amis, apprendre les règles et profiter du beau temps en jouant aux boules.", date: Date(timeIntervalSince1970: 1687521965))],
             community: culturefrancaises
         ),
         
@@ -77,13 +82,14 @@ class EventsViewModel: ObservableObject {
             isOnline: false,
             date: Date(timeIntervalSince1970: 1688722200),
             address: Address(city: "Marseille 1er", address: "11 La Canebière", namePlace: "Office de Tourisme de Marseille"),
-            listParticipant: [userTom, userThomas, userMax, userYuko, userAdeline, userKelian],
+            listParticipant: [userTom, userThomas, userMax, userYuko, userSonia, userAdeline, userKelian, userJohan, userElodie],
             detail: "Parcourez les rues pittoresques de Marseille, où vous allez résoudre des énigmes et relever des défis en équipe pour découvrir les joyaux cachés de la ville.",
             minParticipants: 8,
             photo: "marseille",
             team: [userTom, userYuko, userMarie],
-            comments: [Comment(user: userMax, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965)),
-                       Comment(user: userSonia, content: "Je viendrai de Toulouse. Quequ'un pourrait me dire comment s'y rendre ?", date: Date(timeIntervalSince1970: 1687368600))],
+            comments: [Comment(user: userJohan, content: "Le rallye urbain à Marseille promet une journée d'aventure captivante à travers la ville. Je suis impatient de résoudre des énigmes et de découvrir ses trésors cachés en équipe.", date: Date(timeIntervalSince1970: 1687522965)),
+                       Comment(user: userSonia, content: "C'est une façon amusante et interactive de visiter la ville. Je suis excité de relever des défis tout en explorant les quartiers emblématiques et en apprenant son histoire.", date: Date(timeIntervalSince1970: 1687368600)),
+                      Comment(user: userAdeline, content: "Je suis enthousiasmé par la perspective de parcourir la ville, de résoudre des énigmes et de profiter de vues magnifiques en équipe", date: Date(timeIntervalSince1970: 1687368400))],
             community: culturefrancaises
         ),
         
@@ -97,11 +103,10 @@ class EventsViewModel: ObservableObject {
             minParticipants: 4,
             photo: "beer",
             team: [userMax, userAdeline, userMarie],
-            comments: [Comment(user: userMax, content: "J'ai hâte de vous faire découvrir les spécialités lilloises !", date: Date(timeIntervalSince1970: 1687522965)),
+            comments: [Comment(user: userMax, content: "Je suis impatient de découvrir les spécialités culinaires de Lille. Une expérience savoureuse et conviviale en perspective !", date: Date(timeIntervalSince1970: 1687522965)),
                        Comment(user: userYuko, content: "Je suis tellement gourmande que je viens de Lyon spécialement pour ça.", date: Date(timeIntervalSince1970: 1687368600))],
             community: culturefrancaises
         ),
-        
         
         Event(
             title: "Danse hawaïenne",
@@ -114,9 +119,11 @@ class EventsViewModel: ObservableObject {
             photo: "hawaiianDance",
             team: [userAlexandre, userKelian, userMarie],
             comments: [
-                Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
+                Comment(user: userTom, content: "Absolument ! La danse hawaïenne est une danse très participative, et je suis sûr que les organisateurs ont prévu des ateliers pour que tout le monde puisse apprendre et s'amuser. C'est une excellente occasion de découvrir cette forme d'expression culturelle.", date: Date(timeIntervalSince1970: 1687522965)),
+                Comment(user: userSonia, content: "J'espère qu'il y aura aussi des ateliers de danse où nous pourrons apprendre les mouvements et les chorégraphies du hula. Ce serait tellement amusant de participer activement à cet événement et d'apprendre des danseurs experts", date: Date(timeIntervalSince1970: 1687368600))],
             community: culturehawaienne
         ),
+        
         Event(
             title: "Jeu de piste sur les Traces du film",
             isOnline: false,
@@ -128,7 +135,7 @@ class EventsViewModel: ObservableObject {
             photo: "umbrellas",
             team: [userTom, userYuko, userMarie],
             comments: [
-                Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
+                Comment(user: userTom, content: "Impatient de suivre les indices et de revivre les moments marquants de ce film dans une expérience ludique et immersive.", date: Date(timeIntervalSince1970: 1687522965))],
             community: culturenormande
         ),
         
@@ -143,8 +150,41 @@ class EventsViewModel: ObservableObject {
             photo: "camenbert",
             team: [userAlexandre, userMarie, userElodie],
             comments: [
-                Comment(user: userTom, content: "J'ai hâte !", date: Date(timeIntervalSince1970: 1687522965))],
+                Comment(user: userTom, content: "C'est une occasion unique d'apprendre les secrets de la création de ce fromage emblématique. J'ai hâte de participer et de découvrir le processus de fabrication tout en savourant le délicieux résultat final !", date: Date(timeIntervalSince1970: 1687522965)),
+            Comment(user: userYuko, content: "Je suis ravie de pouvoir participer à l'atelier de fabrication du camembert. Apprendre à créer ce fromage traditionnel dans une ambiance conviviale sera une expérience enrichissante et gourmande.", date: Date(timeIntervalSince1970: 1687521965))],
             community: culturenormande
+        ),
+        
+        Event(
+            title: "Concours du meilleur poké bowl",
+            isOnline: false,
+            date: Date(timeIntervalSince1970: 1690540200),
+            address: Address(city: "Marseille 6e", address: "9 Place Félix Baret", namePlace: "Lanikai Poké"),
+            listParticipant: [userMarie, userThomas, userSonia, userMax, userYuko, userAdeline, userKelian, userAlexandre, userTom, userJohan, userElodie, userHildegarde, userJeanChristophe],
+            detail: "Participez au concours du meilleur poké bowl de Marseille et montrez votre talent culinaire ! Mêlez fraîcheur et créativité pour créer des saveurs uniques avec les délices de la mer du célèbre marché de poisson.",
+            minParticipants: 20,
+            photo: "pokeBowl",
+            team: [userAlexandre, userMarie, userHildegarde],
+            comments: [
+                Comment(user: userTom, content: "Je suis tellement impatient de participer au concours du meilleur poké bowl à Marseille ! J'ai hâte de montrer ma créativité culinaire.", date: Date(timeIntervalSince1970: 1687522965)),
+            Comment(user: userYuko, content: "Je suis enthousiaste à l'idée de faire mes emplettes sur place et de créer un bol plein de saveurs marines", date: Date(timeIntervalSince1970: 1687521965))],
+            community: culturehawaienne
+        ),
+        
+        Event(
+            title: "Fabrication de Lei hawaïen",
+            isOnline: false,
+            date: Date(timeIntervalSince1970: 1690275600),
+            address: Address(city: "Nice", address: "Cours Saleya", namePlace: "Marché aux fleurs"),
+            listParticipant: [userAlexandre, userKelian, userMarie, userThomas, userSonia, userMax, userYuko, userAdeline ],
+            detail: "Apprenez à fabriquer les célèbres collies de fleurs typique de l'île d'Hawaï. Laissez-vous transporter par l'esprit tropical et ajoutez une touche d'exotisme à votre été.",
+            minParticipants: 8,
+            photo: "lei",
+            team: [userKelian, userAlexandre, userMarie],
+            comments: [
+                Comment(user: userAlexandre, content: "Je suis tellement excité ! Apprendre à confectionner ces magnifiques colliers de fleurs va ajouter une touche exotique à ma journée.", date: Date(timeIntervalSince1970: 1687522965)),
+            Comment(user: userKelian, content: "Je suis prêt à me plonger dans l'art traditionnel de la création de ces ornements floraux colorés et parfumés.", date: Date(timeIntervalSince1970: 1687521964))],
+            community: culturehawaienne
         )
     ]
         

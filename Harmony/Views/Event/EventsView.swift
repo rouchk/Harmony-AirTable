@@ -12,9 +12,9 @@ struct EventsView: View {
     
     init() {
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.darkPeriwinkle)
-        UISegmentedControl.appearance().backgroundColor = UIColor(Color.darkPeriwinkle).withAlphaComponent(0.3)
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor .white, .font : UIFont.systemFont(ofSize: 20)], for: .normal)
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor .white, .font : UIFont.systemFont(ofSize: 20)], for: .selected)
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color.darkPeriwinkle).withAlphaComponent(0.2)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.darkPeriwinkle), .font : UIFont.systemFont(ofSize: 16)], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor .white, .font : UIFont.systemFont(ofSize: 16)], for: .selected)
     } // Modify Color & Font size in the Picker
     
     @State private var selectedSegmentIndex = 0
