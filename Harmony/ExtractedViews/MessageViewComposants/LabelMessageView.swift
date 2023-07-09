@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct LabelMessageView: View {
+    
     @ObservedObject var user : User
     @ObservedObject var message : MessageContent
+    @ObservedObject var eventsVM: EventsViewModel
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM: CommunitiesVM
+    
     var date : String?
     var iconDestinataire : String?
     @State var actionNewConversationView = false
@@ -114,7 +119,7 @@ struct LabelMessageView: View {
             
         }
         .sheet(isPresented: $actionNewConversationView) {
-            NewConversationView(users: users, user: user, isAction: $actionNewConversationView)
+            NewConversationView(users: usersVM, eventsVM: eventsVM, communitiesVM: communitiesVM, isAction: $actionNewConversationView)
         }
         
         .sheet(isPresented: $actionEventView) {
@@ -130,7 +135,7 @@ struct LabelMessageView: View {
                     }
                     .padding(10)
                 }
-                DetailEventView(event: message.contentEvent!)
+                DetailEventView(event: message.contentEvent!, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM)
             }
             
         }

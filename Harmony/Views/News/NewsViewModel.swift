@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct NewsViewModel: View {
+    
     @ObservedObject var news: News
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var eventsVM: EventsViewModel
+    @ObservedObject var communitiesVM: CommunitiesVM
+    
     @State private var isLiked = false
     @State private var showingSheet = false
     
@@ -17,7 +22,7 @@ struct NewsViewModel: View {
         VStack{
             HStack{
                 NavigationLink {
-                    OtherUserProfileView(user: news.author, eventsList: EventsViewModel())
+                    OtherUserProfileView(user: news.author, usersVM: usersVM, eventsList: eventsVM, communitiesVM: communitiesVM)
                 } label: {
                     Image(news.author.photo)
                         .resizable()
@@ -86,6 +91,41 @@ struct NewsViewModel: View {
             
         }
         .padding()
+        .onAppear {
+            if !news.author.isFetch {
+                let id = news.author.idAPI
+                print("AUTHOR" + id)
+                
+                print(usersVM.users.count)
+                if usersVM.users.count == 0 {
+                    Task {
+                        await news.author = usersVM.getUserByIdInAirtable(id: id)!
+                    }
+                } else {
+                    let user = usersVM.getUserById(id: id)
+                    if user == nil {
+                        Task {
+                            await news.author = usersVM.getUserByIdInAirtable(id: id)!
+                        }
+                    }
+                }
+                
+            }
+            
+            if !news.community.isFetch {
+                let id = news.community.idAPI
+                let comm = communitiesVM.getCommunityById(id: id)
+                
+                if comm == nil {
+                    Task {
+                        await news.community = communitiesVM.getCommunityByIdInAirtable(id: id)!
+                    }
+                } else {
+                    news.community = comm!
+                }
+               
+            }
+        }
         //fin Vstack
         
     } // fin body
@@ -120,10 +160,10 @@ struct HeartButton: View{
 
 
 
-struct NewsViewModel_Previews: PreviewProvider {
-    static var previews: some View {
-        NewsViewModel(news: exemplePost)
-    }
-}
+//struct NewsViewModel_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NewsViewModel(news: exemplePost, )
+//    }
+//}
 
 

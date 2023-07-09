@@ -15,6 +15,7 @@ class News : Identifiable, ObservableObject {
     
     var id = UUID()
     
+    @Published var idAPI: String = ""
     @Published var title : String
     @Published var photo : String
     @Published var author : User
@@ -25,8 +26,8 @@ class News : Identifiable, ObservableObject {
     @Published var community : Community //peut pas lier encore
     @Published var commentLikes: [Int]
     
-    init(id: UUID = UUID(), title: String, photo: String, author: User, content: String, publishDate: Date, like: Int, comments: [PostComment], community: Community, commentLikes: [Int]) {
-        self.id = id
+    init(idAPI: String = "", title: String, photo: String, author: User, content: String, publishDate: Date, like: Int, comments: [PostComment], community: Community, commentLikes: [Int]) {
+        self.idAPI = idAPI
         self.title = title
         self.photo = photo
         self.author = author

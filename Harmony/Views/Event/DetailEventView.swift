@@ -10,9 +10,11 @@ import SwiftUI
 struct DetailEventView: View {
     
     @ObservedObject var event: Event
+    @ObservedObject var eventsVM : EventsViewModel
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM: CommunitiesVM
     
     let now = Date()
-    var myProfil: User = myUser
     
     @State var showBookingForm = false
     
@@ -36,14 +38,14 @@ struct DetailEventView: View {
                 
                 VStack(spacing: 12) {
                     
-                    if (!self.event.community.members.contains(myProfil)) {
+                    if (!self.event.community!.members.contains(usersVM.myUser!)) {
                         Text("Pour vous inscrire à l'événement, rejoignez d'abord la communauté.")
                             .font(.custom("Urbanist", size: 16))
                             .foregroundColor(Color("DarkPeriwinkle"))
                             .padding(.horizontal, 24)
                         // If the user isn't member of this community, this message is shown.
                         
-                    } else if (self.event.listParticipant.contains(myProfil)) && ( self.event.date > now) {
+                    } else if (self.event.listParticipant.contains(usersVM.myUser!)) && ( self.event.date! > now) {
                         DeactivatedButtonView()
                         // If the participants list contains my profil, a desactivated button is displayed.
                         
@@ -61,7 +63,7 @@ struct DetailEventView: View {
                             }
                         }
                         
-                    } else if self.event.date < now {
+                    } else if self.event.date! < now {
                         // If the event date is past
                         ButtonEvenementPastView()
                     }
@@ -70,7 +72,7 @@ struct DetailEventView: View {
                     }   // Else, a registration button is displayed
                 }
                 
-                if (self.event.listParticipant.contains(myProfil)) {
+                if (self.event.listParticipant.contains(usersVM.myUser!)) {
                     VStack(alignment: .leading) {
                         Text("Mon équipe")
                             .padding(.horizontal, 24)
@@ -80,7 +82,7 @@ struct DetailEventView: View {
                             HStack {
                                 ForEach(event.team) { teamMate in
                                     NavigationLink {
-                                        OtherUserProfileView(user: teamMate, eventsList: EventsViewModel())
+                                        OtherUserProfileView(user: teamMate, usersVM: usersVM, eventsList: eventsVM, communitiesVM: communitiesVM)
                                     } label: {
                                         MyTeamView(teamMate: teamMate)
                                     }
@@ -103,7 +105,7 @@ struct DetailEventView: View {
                             ForEach(event.listParticipant) { participant in
                                 
                                 NavigationLink {
-                                    OtherUserProfileView(user: participant, eventsList: EventsViewModel())
+                                    OtherUserProfileView(user: participant, usersVM: usersVM, eventsList: eventsVM, communitiesVM: communitiesVM)
                                 } label: {
                                     ParticipantsView(participant: participant)
                                 }
@@ -130,7 +132,7 @@ struct DetailEventView: View {
                 .padding(.horizontal, 24)
                 
                 
-                WriteCommentFieldEventView(myProfil: myProfil, newContent: newContent, event: event)
+                WriteCommentFieldEventView(myProfil: usersVM.myUser!, newContent: newContent, event: event)
                     .padding(.bottom, 8)
                 
                 
@@ -143,16 +145,52 @@ struct DetailEventView: View {
             
         } // end ScrollView
         .background(Color("whiteSmoke"))
+        .onAppear {
+            event.comments = event.comments.map {
+                var mutateComment = $0
+                if !mutateComment.isFetch {
+                    let id = mutateComment.idAPI
+                    let c = eventsVM.getCommentById(id: id)
+                    if c == nil {
+                        Task {
+                            await mutateComment = eventsVM.getCommentByIdInAirtable(id: id)!
+                        }
+                    } else {
+                        mutateComment = c!
+                    }
+                    
+                }
+                return mutateComment
+            }
+            
+            print("BLAAA APPEAR")
+//            event.listParticipant = event.listParticipant.map {
+//                var mutateUser = $0
+//                if !mutateUser.isFetch {
+//                    let id = mutateUser.idAPI
+//                    let us = usersVM.getUserById(id: id)
+//
+//                    if us == nil {
+//                        Task {
+//                            await mutateUser = usersVM.getUserByIdInAirtable(id: id)!
+//                        }
+//                    } else {
+//                        mutateUser = us!
+//                    }
+//                }
+//                return mutateUser
+//            }
+        }
         
         
     }
 }
-
-struct DetailEventView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailEventView(event: eventExampleNonRegistered)
-    }
-}
+//
+//struct DetailEventView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailEventView(event: eventExampleNonRegistered)
+//    }
+//}
 
 
 
@@ -168,7 +206,7 @@ struct EventInfoView: View {
         dateFormatter.timeStyle = .short
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: event.date)
+        return dateFormatter.string(from: event.date!)
     } // Convert the display format of event.date in "dd month yyyy" in French
     
     
@@ -206,7 +244,7 @@ struct EventInfoView: View {
                     Image(systemName: "person.3.fill")
                         .font(.system(size: 16.0))
                         .frame(width: 28)
-                    Text(event.community.name)
+                    Text(event.community!.name)
                         .padding(.leading, 4)
                 }
             }
@@ -356,7 +394,7 @@ struct DiscussionFeedView: View {
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: comment.date)
+        return dateFormatter.string(from: comment.date!)
     }     // Convert the display format of comment.date
     
     
@@ -367,7 +405,7 @@ struct DiscussionFeedView: View {
                 .padding(.bottom, 16)
             
             HStack(alignment: .top)  {
-                Image(comment.user.photo)
+                Image(comment.user!.photo)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 48, height: 48)
@@ -379,7 +417,7 @@ struct DiscussionFeedView: View {
                     Spacer()
                     
                     HStack(alignment: .top) {
-                        Text(comment.user.pseudo)
+                        Text(comment.user!.pseudo)
                             .modifier(Head2())
                         
                         Spacer()
@@ -487,7 +525,7 @@ struct BookingFormView: View {
         dateFormatter.timeStyle = .short
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: event.date)
+        return dateFormatter.string(from: event.date!)
     } // Convert the display format of event.date in "dd month yyyy" in French
     
     @State var showConfirmation = false
@@ -551,7 +589,7 @@ struct BookingFormView: View {
                         Image(systemName: "person.3.fill")
                             .frame(width: 60)
                         
-                        Text(event.community.name)
+                        Text(event.community!.name)
                     }
                     .padding(.vertical,8)
                 }

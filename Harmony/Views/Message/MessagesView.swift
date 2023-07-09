@@ -11,6 +11,10 @@ struct MessagesView: View {
     
     @ObservedObject var conversation : Conversation
     @ObservedObject var user : User
+    @ObservedObject var eventsVM: EventsViewModel
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM: CommunitiesVM
+    
     
     @State var showingShare = false
     @State var newMessage : String = ""
@@ -39,7 +43,7 @@ struct MessagesView: View {
                                             
                                             // if the message type is text, we can use the reactions system
                                             if (message.content.typeMessage == .text) {
-                                                LabelMessageView(user: user, message: message.content, date: message.dateToString())
+                                                LabelMessageView(user: user, message: message.content, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM, date: message.dateToString())
                                                     .onLongPressGesture {
                                                             message.isReaction = true
                                                             isMessageReaction.toggle()
@@ -50,7 +54,7 @@ struct MessagesView: View {
                                                         .offset(x:10, y:-3)
                                                 }
                                             } else {
-                                                LabelMessageView(user: user, message: message.content, date: message.dateToString())
+                                                LabelMessageView(user: user, message: message.content, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM, date: message.dateToString())
                                             }
                                             
                                         }
@@ -59,7 +63,7 @@ struct MessagesView: View {
                                             
                                             // if the message type is text, we can use the reactions system
                                             if (message.content.typeMessage == .text) {
-                                                LabelMessageView(user: user, message: message.content, date: message.dateToString(), iconDestinataire: conversation.user.photo)
+                                                LabelMessageView(user: user, message: message.content, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM, date: message.dateToString(), iconDestinataire: conversation.user.photo)
                                                     .onLongPressGesture {
                                                             message.isReaction = true
                                                             isMessageReaction.toggle()
@@ -70,7 +74,7 @@ struct MessagesView: View {
                                                         .offset(x:110, y:-3)
                                                 }
                                             } else {
-                                                LabelMessageView(user: user, message: message.content, date: message.dateToString(), iconDestinataire: conversation.user.photo)
+                                                LabelMessageView(user: user, message: message.content, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM, date: message.dateToString(), iconDestinataire: conversation.user.photo)
                                             }
                                         }
                                     }
@@ -111,7 +115,7 @@ struct MessagesView: View {
                     
                 // display the message with the different reactions available
                 } else {
-                    ReactionMessageView(user: user, conversation: conversation, message: conversation.MessageWaitingForAResponse()!, isMessageReaction: $isMessageReaction)
+                    ReactionMessageView(user: user, conversation: conversation, message: conversation.MessageWaitingForAResponse()!, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM, isMessageReaction: $isMessageReaction)
                 }
                 
             }

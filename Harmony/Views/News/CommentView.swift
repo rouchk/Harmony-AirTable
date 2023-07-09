@@ -53,7 +53,7 @@ struct CommentPostView: View {
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: comments.date)
+        return dateFormatter.string(from: comments.date!)
     }     // Convert the display format of comment.date
     
     
@@ -63,7 +63,7 @@ struct CommentPostView: View {
         Divider()
 //                    .padding(.bottom)
         HStack {
-            Image(comments.user.photo)
+            Image(comments.user!.photo)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 50, height: 50)
@@ -75,7 +75,7 @@ struct CommentPostView: View {
                 
                 HStack {
                 
-                    Text(comments.user.pseudo)
+                    Text(comments.user!.pseudo)
                         .modifier(Head2())
 
                     Spacer()
@@ -128,8 +128,6 @@ struct NewCommentFieldView: View {
                 .frame(width: 32, height: 40)
                 .clipShape(Circle())
             
-            
-            
             Button {
                 event.addComment(newComment: Comment(user: myProfil, content: newContent, date: Date()))
             } label: {
@@ -144,9 +142,9 @@ struct NewCommentFieldView: View {
     }
 }
 
-
-struct CommentsView_Previews: PreviewProvider {
-    static var previews: some View {
-        CommentsView(news: exemplePost)
-    }
-}
+//
+//struct CommentsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CommentsView(news: exemplePost)
+//    }
+//}

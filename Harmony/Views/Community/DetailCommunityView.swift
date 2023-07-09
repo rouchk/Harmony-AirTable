@@ -13,19 +13,14 @@ struct DetailCommunityView: View {
     //    @EnvironmentObject var teamVM: teamView
     //    @ObservedObject var users = UsersVM()
     
-    @State var community : Community
-    var myProfil: User = myUser
+    @ObservedObject var community : Community
     
     @State var showConfirmation: Bool = false
     @State var showAlert: Bool = false
     
     @ObservedObject var eventsList: EventsViewModel
-    
-    var eventFilter: [Event] {
-        return eventsList.eventsList.filter { event in
-            (community == event.community) && (event.date > Date())
-        }.sorted(by: { $0.date < $1.date })
-    }
+    @ObservedObject var communitiesVM: CommunitiesVM
+    @ObservedObject var usersVM: UsersVM
     
     @State var showSheet = false
     
@@ -62,7 +57,7 @@ struct DetailCommunityView: View {
 
                 
                 
-                if (self.community.members.contains(myProfil)) {
+                if (self.community.members.contains(usersVM.myUser!)) {
                     DeactivatedButonView()
                     // If the user is already member of this community
                 } else {
@@ -102,9 +97,10 @@ struct DetailCommunityView: View {
                             HStack {
                                 ForEach(community.hosts) { host in
                                     NavigationLink {
-                                        OtherUserProfileView(user: host, eventsList: EventsViewModel())
+                                        OtherUserProfileView(user: host, usersVM: usersVM, eventsList: eventsList, communitiesVM: communitiesVM)
                                     } label: {
                                         IconUserView(icon: host.photo, isConnected: host.isConnected)
+                                        //Text(host.pseudo)
                                     }
                                 }
                             }
@@ -122,7 +118,7 @@ struct DetailCommunityView: View {
                             HStack {
                                 ForEach(community.members) { member in
                                     NavigationLink {
-                                        OtherUserProfileView(user: member, eventsList: EventsViewModel())
+                                        OtherUserProfileView(user: member, usersVM: usersVM, eventsList: eventsList, communitiesVM: communitiesVM)
                                     } label: {
                                         IconUserView(icon: member.photo, isConnected: member.isConnected)
                                     }
@@ -152,7 +148,7 @@ struct DetailCommunityView: View {
                         
                         ForEach(eventFilter) { event in
                             NavigationLink {
-                                DetailEventView(event: event)
+                                DetailEventView(event: event, eventsVM: eventsList, usersVM: usersVM, communitiesVM: communitiesVM)
                             } label: {
                                 EventListRowView(myEvent: event)
                             }
@@ -188,11 +184,9 @@ struct DetailCommunityView: View {
 //                    .padding(.horizontal, 24)
                     .padding(EdgeInsets(top: 0, leading: 24, bottom: 16, trailing: 24))
                     
-                    
-
-                        if (self.community.members.contains(myProfil)) {
+                    if (self.community.members.contains(usersVM.myUser!)) {
                                 NavigationLink {
-                                    CreateEvenementView(currentUser: myProfil)
+                                    CreateEvenementView(usersVM: usersVM, communitiesVM: communitiesVM, eventsVM: eventsList)
                                 } label: {
                                     Text("Proposer un événement")
                                         .frame(width: 316, height: 44)
@@ -203,19 +197,6 @@ struct DetailCommunityView: View {
                                 }
                             .padding(.horizontal, 24)
                                 
-                                                        
-//                            Button {
-//                                showSheet
-//                                    .toggle()
-//                            }label: {
-//                                Text("Proposer un événement")
-//                                    .frame(width: 316, height: 44)
-//                            }
-//                            .buttonStyle(.borderedProminent)
-//                            .foregroundColor(Color.white)
-//                            .font(.custom("Urbanist", size: 20))
-//                            .tint(Color.darkPeriwinkle)
-//                            .padding(.horizontal, 24)
                         }
                 }
             } // end of the biggest VStack
@@ -226,14 +207,70 @@ struct DetailCommunityView: View {
 //            }
             
         }
+        .onAppear {
+            community.hosts = community.hosts.map {
+                var mutableHost = $0
+                if !mutableHost.isFetch {
+                    let id = mutableHost.idAPI
+                    let u = usersVM.getUserById(id: id)
+                    if u == nil {
+                        Task {
+                            await mutableHost = usersVM.getUserByIdInAirtable(id: id)!
+                        }
+                    } else {
+                        mutableHost = u!
+                    }
+                }
+                return mutableHost
+            }
+            
+            community.members = community.members.map {
+                var mutableMember = $0
+                if !mutableMember.isFetch {
+                    let id = mutableMember.idAPI
+                    let u = usersVM.getUserById(id: id)
+                    if u == nil {
+                        Task {
+                            await mutableMember = usersVM.getUserByIdInAirtable(id: id)!
+                        }
+                    } else {
+                        mutableMember = u!
+                    }
+                }
+                return mutableMember
+            }
+            
+            community.events = community.events.map {
+                var mutableEvent = $0
+                if !mutableEvent.isFetch {
+                    let id = mutableEvent.idAPI
+                    let u = eventsList.getEventById(id: id)
+                    if u == nil {
+                        Task {
+                            await mutableEvent = eventsList.getEventByIdInAirtable(id: id)!
+                        }
+                    } else {
+                        mutableEvent = u!
+                    }
+                }
+                return mutableEvent
+            }
+        }
+    }
+    
+    
+    var eventFilter: [Event] {
+        return eventsList.eventsList.filter { event in
+            (community.idAPI == event.community?.idAPI) && (event.date! > Date())
+        }.sorted(by: { $0.date! < $1.date! })
     }
 }
-
-struct DetailCommunityView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailCommunityView(community: culturefrancaises, eventsList: EventsViewModel())
-    }
-}
+//
+//struct DetailCommunityView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailCommunityView(community: culturefrancaises, eventsList: EventsViewModel())
+//    }
+//}
 
 
 

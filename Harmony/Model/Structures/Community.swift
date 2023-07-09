@@ -16,26 +16,61 @@ enum Continent: String, CaseIterable {
     case asie = "Asie"
 }
 
-struct Community : Identifiable, Equatable {
+class Community : Identifiable, Equatable, ObservableObject {
+
+//    struct Community : Identifiable, ObservableObject {
+    var id = UUID()
+    
+    var isFetch = true
+    @Published var idAPI = ""
+    @Published var name : String
+    @Published var photo : String
+    @Published var photo1 : String
+    @Published var icon : String
+    @Published var rank : Double
+    @Published var description : String
+    @Published var rating : Double
+    @Published var hosts : [User]
+    @Published var members : [User]
+    @Published var events : [Event]
+    @Published var continent : Continent
+    
+    init(idAPI: String) {
+        self.isFetch = false
+        self.idAPI = idAPI
+        self.name = ""
+        self.photo = ""
+        self.photo1 = ""
+        self.icon = ""
+        self.rank = 0.0
+        self.description = ""
+        self.rating = 0.0
+        self.hosts = []
+        self.members = []
+        self.events = []
+        self.continent = Continent.asie
+    }
+    
+    init(idAPI: String = "", name: String, photo: String, photo1: String, icon: String, rank: Double, description: String, rating: Double, hosts: [User], members: [User], events: [Event], continent: Continent) {
+        self.idAPI = idAPI
+        self.name = name
+        self.photo = photo
+        self.photo1 = photo1
+        self.icon = icon
+        self.rank = rank
+        self.description = description
+        self.rating = rating
+        self.hosts = hosts
+        self.members = members
+        self.events = events
+        self.continent = continent
+    }
+    
     static func == (lhs: Community, rhs: Community) -> Bool {
         return lhs.id == rhs.id
     }
     
-//    struct Community : Identifiable, ObservableObject {
-        var id = UUID()
     
-    
-    var name : String
-    var photo : String
-    var photo1 : String
-    var icon : String
-    var rank : Double
-    var description : String
-    var rating : Double
-    var hosts : [User]
-    var members : [User]
-    var events : [Event]
-    var continent : Continent
     
 }
 

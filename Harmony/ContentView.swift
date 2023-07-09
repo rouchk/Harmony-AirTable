@@ -9,18 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     
-//    init() {
-////        let standarApparence = UITabBarAppearance()
-////        standarApparence.configureWithOpaqueBackground()
-////        UITabBar.appearance().standardAppearance = standarApparence
-////        let scrollEdgeAppareance = UITabBarAppearance()
-////        scrollEdgeAppareance.configureWithOpaqueBackground()
-////        UITabBar.appearance().scrollEdgeAppearance = scrollEdgeAppareance
-//    }
-    
+    @ObservedObject var usersVM = UsersVM()
+    @ObservedObject var eventsVM = EventsViewModel()
+    @ObservedObject var newsmodel = Post()
+    @ObservedObject var communitiesVM = CommunitiesVM()
+
     var body: some View {
-        MenuView()
-        
+        MenuView(usersVM: usersVM, eventsVM: eventsVM, newsmodel: newsmodel, communitiesVM: communitiesVM)
     }
 }
 

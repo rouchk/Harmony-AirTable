@@ -10,32 +10,37 @@ import SwiftUI
 struct ChatView: View {
     
     @State var searchMessageByUser : String = ""
-    @ObservedObject var user : User
+    @ObservedObject var users : UsersVM
+    @ObservedObject var eventsVM: EventsViewModel
+    @ObservedObject var communitiesVM: CommunitiesVM
     
     var body: some View {
         NavigationView {
             VStack {
-                if searchResult.isEmpty {
-                    Text("Aucune conversation correspondante")
-                } else {
-                    // display conversations based on username search
-                    List {
-                        ForEach(searchResult) { conv in
-                            ZStack {
-                                LabelConversationView(conversation: conv)
-                                NavigationLink(destination: MessagesView(conversation: conv, user: user)) {
+                if searchResult != nil {
+                    if searchResult!.isEmpty {
+                        Text("Aucune conversation correspondante")
+                    } else {
+                        // display conversations based on username search
+                        List {
+                            ForEach(searchResult!) { conv in
+                                ZStack {
+                                    LabelConversationView(conversation: conv)
+                                    NavigationLink(destination: MessagesView(conversation: conv, user: users.myUser!, eventsVM: eventsVM, usersVM: users, communitiesVM: communitiesVM)) {
+                                    }
+                                    .opacity(0)
                                 }
-                                .opacity(0)
+                            }
+                            
+                            // delete conversation selected
+                            .onDelete { indexSet in
+                                users.myUser!.delConversationByIndex(index: indexSet)
                             }
                         }
-                        
-                        // delete conversation selected
-                        .onDelete { indexSet in
-                            user.delConversationByIndex(index: indexSet)
-                        }
+                        .listStyle(.plain)
                     }
-                    .listStyle(.plain)
                 }
+               
             }
             .background(Color.white)
             .navigationTitle("Messages")
@@ -45,26 +50,31 @@ struct ChatView: View {
             /* add conversation screen */
             .navigationBarItems(
                 trailing:
-                    NavigationLink(destination: AddConversationView(user: myUser))  {
+                    NavigationLink(destination: AddConversationView(users: users, eventsVM: eventsVM, communitiesVM: communitiesVM))  {
                         Image(systemName: "plus.circle")
                     }
             )
         }
     }
     
-    var searchResult: [Conversation] {
-        if !searchMessageByUser.isEmpty {
-            return user.conversations.filter { conv in
-                conv.user.pseudo.lowercased().contains(searchMessageByUser.lowercased())
+    var searchResult: [Conversation]? {
+        if users.myUser != nil {
+            if !searchMessageByUser.isEmpty {
+                return users.myUser!.conversations.filter { conv in
+                    conv.user.pseudo.lowercased().contains(searchMessageByUser.lowercased())
+                }
             }
+            
+            return users.myUser!.conversations
         }
         
-        return user.conversations
+        return nil
+       
     }
 }
-
-struct ChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatView(user: myUser)
-    }
-}
+//
+//struct ChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatView(user: myUser)
+//    }
+//}

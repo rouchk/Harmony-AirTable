@@ -18,7 +18,7 @@ struct EventListRowView: View {
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: myEvent.date)
+        return dateFormatter.string(from: myEvent.date!)
     } // Convert the display format of myEvent.date
     
     var isSmall: Bool? = false
@@ -39,8 +39,9 @@ struct EventListRowView: View {
                         .modifier(Head1())
                         .multilineTextAlignment(.leading)
                     
-                    Text(formattedDateString)
-                        .modifier(Head3()) // Affciher myEvent.date en format "jj mois aaaa"
+//                    Text(myEvent.date!)
+//                    Text(formattedDateString)
+//                        .modifier(Head3()) // Affciher myEvent.date en format "jj mois aaaa"
                     
                     HStack {
                         if myEvent.isOnline {

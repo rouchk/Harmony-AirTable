@@ -9,9 +9,24 @@ import Foundation
 
 class UsersVM : ObservableObject {
     @Published var users : [User] = []
+    @Published var myUser: User? = nil
+    @Published var usersAPI: [UserAPI] = []
+    @Published var myUserAPI: UserAPI? = nil
     
     init() {
-        self.users = []
+        Task {
+//            await self.fetchUsers()
+//            for user in usersAPI {
+//                await users.append(user.APItoClass())
+//            }
+            
+            await self.getMyUserAirtable()
+            if myUserAPI != nil {
+                myUser = await myUserAPI!.APItoClass()
+            } else {
+                print("PROBLEME AVEC myUserAPI")
+            }
+        }
     }
     
     init(users : [User]) {
@@ -24,6 +39,197 @@ class UsersVM : ObservableObject {
     
     func removeUser (user: User) {
         self.users = self.users.filter { $0 !== user }
+    }
+    
+    
+    func fetchUsers() async {
+        let apikey = "key7FutjOPCf6ezGz"
+        if let url = URL(string: "https://api.airtable.com/v0/appr9cfDbLcGoVIf8/tblSFhyjk9RTMvctb/") {
+            do {
+                var request = URLRequest(url: url)
+                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+
+                let (data, _) = try await URLSession.shared.data(for: request)
+                if let decodedResponse = try? JSONDecoder().decode(UserResponse.self, from: data) {
+                    print("TABLE USER OK")
+                    usersAPI = decodedResponse.users
+                } else {
+                    print("TABLE USER BAD")
+                }
+            } catch {
+                print("Invalid data")
+            }
+        }
+    }
+
+    func addUserAirtable(user: UserAPI) async {
+        let record = RecordUser(fields: user)
+
+        let apikey = "key7FutjOPCf6ezGz"
+        if let url = URL(string: "https://api.airtable.com/v0/appr9cfDbLcGoVIf8/tblSFhyjk9RTMvctb/") {
+            do {
+                var request = URLRequest(url: url)
+                request.httpMethod = "POST"
+                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+                let jsonPig = try JSONEncoder().encode(record)
+
+                request.httpBody = jsonPig
+
+                let (_, response) = try await URLSession.shared.data(for: request)
+
+                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                    print("All is ok")
+                    await fetchUsers()
+                }
+
+            } catch {
+                print("Invalid data")
+            }
+        }
+    }
+
+    func delUserAirtable (id: String) async  {
+        var deleted: Bool = false
+
+        let apikey = "key7FutjOPCf6ezGz"
+        if let url = URL(string: "https://api.airtable.com/v0/appr9cfDbLcGoVIf8/tblSFhyjk9RTMvctb/" + id) {
+            do {
+                var request = URLRequest(url: url)
+                request.httpMethod = "DELETE"
+                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+
+                let (data, _) = try await URLSession.shared.data(for: request)
+
+                if let decodedResponse = try? JSONDecoder().decode(RecordUser.self, from: data) {
+                    print("DEL USER ID OK")
+                    deleted = decodedResponse.deleted!
+
+                    if (deleted) {
+                        print("DEL USER ID BAD")
+                    }
+                } else {
+                    print("PAS BONNN")
+                }
+            } catch {
+                print("Invalid data")
+            }
+        }
+    }
+
+    func fetchUserById (id: String) async -> UserAPI? {
+        var user: UserAPI? = nil
+        
+        let apikey = "key7FutjOPCf6ezGz"
+        if let url = URL(string: "https://api.airtable.com/v0/appr9cfDbLcGoVIf8/tblSFhyjk9RTMvctb/" + id) {
+            do {
+                var request = URLRequest(url: url)
+                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+                let (data, _) = try await URLSession.shared.data(for: request)
+                if let decodedResponse = try? JSONDecoder().decode(RecordUser.self, from: data) {
+                    print("GET USER ID OK")
+                    user = decodedResponse.fields
+                    if (user == nil) {
+                        print("GET USER ID BAD")
+                    }
+                } else {
+                    print("PAS BONNN")
+                }
+            } catch {
+                print("Invalid data")
+            }
+        }
+        return user
+    }
+    
+    func updateUserAirtable (user: UserAPI) async {
+        let record = RecordUser(fields: user)
+
+        let apikey = "key7FutjOPCf6ezGz"
+
+        if let url = URL(string: "https://api.airtable.com/v0/appQOh9n8IsrhPdsC/tblSFhyjk9RTMvctb/" + user.id) {
+            do {
+                var request = URLRequest(url: url)
+                request.httpMethod = "PATCH"
+                request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+                let jsonPig = try JSONEncoder().encode(record)
+
+                request.httpBody = jsonPig
+
+                let (_, response) = try await URLSession.shared.data(for: request)
+
+                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                    print("All is ok")
+                    await fetchUsers()
+                }
+
+            } catch {
+                print("Invalid data")
+            }
+        }
+    }
+    
+    func searchUserById (id: String) -> User? {
+//        for user in users {
+//            if user.id == id {
+//                return user
+//            }
+//        }
+        return nil
+    }
+    
+    func getMyUserAirtable() async {
+        self.myUserAPI = await self.fetchUserById(id: "reczBTJLlmNiTSHNC")!
+    }
+
+    func getUserById(id: String) -> User? {
+        if self.users != nil {
+            for user in self.users {
+                if user.idAPI == id {
+                    return user
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func getUserByIdInAirtable(id: String) async -> User? {
+        let userAPI = await self.fetchUserById(id: id)
+        var user: User? = nil
+        var isNew = true
+        
+        if userAPI != nil {
+            usersAPI = usersAPI.map {
+                var mutableUser = $0
+                if ($0.id == id) {
+                    isNew = false
+                    mutableUser = userAPI!
+                }
+                return mutableUser
+            }
+            
+            user = await userAPI!.APItoClass()
+            
+            if isNew {
+                usersAPI.append(userAPI!)
+                users.append(user!)
+            } else {
+                users = users.map {
+                    var mutableUser = $0
+                    if $0.idAPI == id {
+                        mutableUser = user!
+                    }
+                    return mutableUser
+                }
+            }
+    
+        }
+        
+        return user
     }
 }
 
@@ -96,11 +302,13 @@ var userJeanChristophe: User = User(pseudo: "Jean-Christophe", photo: "jc", cove
                                     about: "Salut ! Je suis Jean-Christophe, passionné par les cultures traditionnelles et complètement dingue des hibous. Rejoignez-moi pour explorer le monde fascinant de la tradition et de la sagesse nocturne des chouettes !",
                                     isConnected: false, myContacts: [])
 
-var myUser = userMarie
+//var myUser = userMarie
 
 var arrayUsers = [userMarie, userJohan, userAlexandre, userElodie, userHildegarde, userSonia, userTom, userThomas, userYuko, userKelian, userAdeline]
 
-var users = UsersVM(users: arrayUsers)
+//var users = UsersVM(users: arrayUsers)
+var users = UsersVM()
+var myUser = userMarie
 
 var conversation1 = Conversation(messages: [
     Message(content: MessageContent(typeMessage: .text, contentText: "Salut, tu vas bien ?"), isRecipient: false, date: Date()),

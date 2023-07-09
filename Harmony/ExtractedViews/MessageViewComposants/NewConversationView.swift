@@ -9,26 +9,29 @@ import SwiftUI
 
 struct NewConversationView: View {
     @ObservedObject var users : UsersVM
-    @ObservedObject var user : User
+    @ObservedObject var eventsVM: EventsViewModel
+    @ObservedObject var communitiesVM: CommunitiesVM
     @Binding var isAction : Bool
     
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                
-                Button {
-                    if (user.lastConversation()!.messages.count == 0) {
-                        user.delConversationLast()
+            if users.myUser != nil {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        if (users.myUser!.lastConversation()!.messages.count == 0) {
+                            users.myUser!.delConversationLast()
+                        }
+                        isAction.toggle()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.largeTitle)
                     }
-                    isAction.toggle()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.largeTitle)
+                    .padding(10)
                 }
-                .padding(10)
+                MessagesView(conversation: users.myUser!.lastConversation()!, user: users.myUser!, eventsVM: eventsVM, usersVM: users, communitiesVM: communitiesVM)
             }
-            MessagesView(conversation: user.lastConversation()!, user: user)
         }
     }
 }

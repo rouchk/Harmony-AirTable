@@ -10,7 +10,9 @@ import PhotosUI
 
 struct CreateEvenementView: View {
     
-    @ObservedObject var currentUser: User
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM: CommunitiesVM
+    @ObservedObject var eventsVM: EventsViewModel
     
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
@@ -122,15 +124,15 @@ struct CreateEvenementView: View {
                 Text("Votre proposition a bien été transmise aux hôtes de la communauté. Elle sera examinée dans les mailleurs délais.")
             }
         }
-        .navigationDestination(isPresented: $moveToExploreView, destination: {ExploreView(currentUser: currentUser)})
+        .navigationDestination(isPresented: $moveToExploreView, destination: {ExploreView(usersVM: usersVM, communitiesVM: communitiesVM, eventsVM: eventsVM)})
     }
 }
 
 
 
-
-struct CreateEvenementView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateEvenementView(currentUser: myUser)
-    }
-}
+//
+//struct CreateEvenementView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CreateEvenementView(currentUser: myUser)
+//    }
+//}

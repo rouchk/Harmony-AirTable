@@ -206,6 +206,9 @@ class User : Identifiable, Equatable, ObservableObject {
     
     var id: UUID = UUID()
     
+    var isFetch = true
+    
+    @Published var idAPI: String
     @Published var pseudo: String
     @Published var photo: String
     @Published var coverPhoto: String
@@ -218,7 +221,24 @@ class User : Identifiable, Equatable, ObservableObject {
     @Published var conversations : [Conversation]
     @Published var myContacts : [User]
     
-    init(pseudo: String, photo: String, coverPhoto: String, city: String, language: [Language], media: [String], about: String, isConnected: Bool, events : [Event] = [], conversations : [Conversation] = [], myContacts : [User]) {
+    init(idAPI: String) {
+        self.idAPI = idAPI
+        self.isFetch = false
+        self.pseudo = ""
+        self.photo = ""
+        self.coverPhoto = ""
+        self.city = ""
+        self.language = []
+        self.media = []
+        self.about = ""
+        self.isConnected = false
+        self.events = []
+        self.conversations = []
+        self.myContacts = []
+    }
+    
+    init(idAPI: String = "", pseudo: String, photo: String, coverPhoto: String, city: String, language: [Language], media: [String], about: String, isConnected: Bool, events : [Event] = [], conversations : [Conversation] = [], myContacts : [User]) {
+        self.idAPI = idAPI
         self.pseudo = pseudo
         self.photo = photo
         self.coverPhoto = coverPhoto

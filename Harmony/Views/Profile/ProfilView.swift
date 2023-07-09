@@ -9,22 +9,30 @@ import SwiftUI
 
 struct ProfilView: View {
     
-    @ObservedObject var currentUser : User
-    @ObservedObject var eventsList : EventsViewModel
+//    @EnvironmentObject var dataVM: DataVM
+//    @EnvironmentObject var usersVM: UsersVM
+//    @EnvironmentObject var eventsVM: EventsViewModel
+//
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var eventsVM : EventsViewModel
+    @ObservedObject var communitiesVM : CommunitiesVM
+    
     let now = Date()
     
     @State private var isEditingProfile = false // Add a state for controlling the navigation
     
     func myCommunities(user: User) -> [Community] {
-        return arrayOfCulture.filter { $0.members.contains(user)
-        }
+        return communitiesVM.communities.filter { $0.members.contains(user) }
+        //return communitiesVM.communities
     }
     
-    func myNextEvent(user: User) -> Event {
-        let myFuturEvents = eventsList.eventsList.filter { event in
-            (event.listParticipant.contains(user)) && (event.date >= now)
-        }.sorted(by: { $0.date < $1.date })
-        return myFuturEvents[0]
+    func myNextEvent(user: User) -> Event? {
+//        let myFuturEvents = eventsVM.eventsList.filter { event in
+//            (event.listParticipant.contains(user)) && (event.date! >= now)
+//        }.sorted(by: { $0.date! < $1.date! })
+//        return myFuturEvents[0]
+        print(eventsVM.eventsList.count)
+        return eventsVM.eventsList.first!
     }
     
     
@@ -34,7 +42,7 @@ struct ProfilView: View {
                 VStack {
                     
                     ZStack(alignment: .top) {
-                        Image(currentUser.coverPhoto)
+                        Image(usersVM.myUser!.coverPhoto)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 200)
@@ -43,7 +51,7 @@ struct ProfilView: View {
                             .stroke(Color.whiteSmoke, lineWidth: 16)
                             .frame(width: 120, height: 120)
                             .padding(.top, 140)
-                        Image(currentUser.photo)
+                        Image(usersVM.myUser!.photo)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 120, height: 120)
@@ -54,12 +62,12 @@ struct ProfilView: View {
                     
                     
                     VStack(spacing: 8) {
-                        Text(currentUser.pseudo)
+                        Text(usersVM.myUser!.pseudo)
                             .modifier(Head0())
                         
                         HStack {
                             MapPinView()
-                            Text(currentUser.city)
+                            Text(usersVM.myUser!.city)
                             
                         }
                         .modifier(HeadGray())
@@ -67,7 +75,7 @@ struct ProfilView: View {
                     .padding(.bottom, 24)
                     
                     HStack(spacing: 16) {
-                        NavigationLink(destination: ProfileCustomView(currentUser: currentUser), isActive: $isEditingProfile) {
+                        NavigationLink(destination: ProfileCustomView(currentUser: usersVM.myUser!), isActive: $isEditingProfile) {
                             EmptyView()
                         }
                         .hidden()
@@ -101,7 +109,7 @@ struct ProfilView: View {
                         Text("À propos de moi")
                             .modifier(Head1())
                         
-                        Text(currentUser.about)
+                        Text(usersVM.myUser!.about)
                             .modifier(Normal())
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -115,7 +123,7 @@ struct ProfilView: View {
                         //                Make a list to display all the languages of the user with Text(userViewModel.currentUser.language)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(currentUser.language, id: \.self) { language in
+                                ForEach(usersVM.myUser!.language, id: \.self) { language in
                                     Text(language.rawValue)
                                         .font(.custom("UrbanistRegular", size: 16))
                                         .padding(12)
@@ -139,10 +147,10 @@ struct ProfilView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(myCommunities(user: currentUser)) { community in
+                                ForEach(myCommunities(user: usersVM.myUser!)) { community in
                                     
                                     NavigationLink {
-                                        DetailCommunityView(community: community, eventsList: EventsViewModel())
+                                        DetailCommunityView(community: community, eventsList: eventsVM, communitiesVM: communitiesVM, usersVM: usersVM)
                                     } label: {
                                         ZStack(alignment: .top) {
                                             Rectangle()
@@ -177,9 +185,9 @@ struct ProfilView: View {
                             .modifier(Head1())
                         
                         NavigationLink {
-                            DetailEventView(event: myNextEvent(user: currentUser))
+                            DetailEventView(event: myNextEvent(user: usersVM.myUser!)!, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM)
                         } label: {
-                            EventListRowView(myEvent: myNextEvent(user: currentUser))
+                            EventListRowView(myEvent: myNextEvent(user: usersVM.myUser!)!)
                                 .cornerRadius(8)
                         }
                     }
@@ -193,7 +201,7 @@ struct ProfilView: View {
                         
                         ScrollView(.horizontal) {
                             HStack(spacing: 16) {
-                                ForEach(currentUser.media, id: \.self) { media in
+                                ForEach(usersVM.myUser!.media, id: \.self) { media in
                                     Image(media)
                                         .resizable()
                                         .frame(width: 120, height: 120)
@@ -208,14 +216,66 @@ struct ProfilView: View {
                 
             }
         }
+        .onAppear {
+            Task {
+                
+                await communitiesVM.fetchCommunities()
+                
+                for com in communitiesVM.communitiesAPI {
+                    var hosts: [User] = []
+                    var members: [User] = []
+                    var events: [Event] = []
+                    
+                    if com.hosts != nil {
+                        for ho in com.hosts! {
+                            var u = usersVM.getUserById(id: ho)
+                            if u == nil {
+                                await u = usersVM.getUserByIdInAirtable(id: ho)!
+                            }
+                            hosts.append(u!)
+                        }
+                    }
+                    
+                    if com.members != nil {
+                        for mb in com.members! {
+                            var u = usersVM.getUserById(id: mb)
+                            if u == nil {
+                                await u = usersVM.getUserByIdInAirtable(id: mb)!
+                            }
+                            members.append(u!)
+                        }
+                    }
+                    
+                    if com.events != nil {
+                        for ev in com.events! {
+                            events.append(eventsVM.getEventById(id: ev)!)
+                        }
+                    }
+                    
+                    communitiesVM.communities.append(Community(idAPI: com.id, name: com.name, photo: com.photo ?? "", photo1: com.photo1 ?? "", icon: com.icon ?? "", rank: com.rank ?? 0.0, description: com.description ?? "", rating: com.rating ?? 0.0, hosts: hosts, members: members, events: events, continent: APIGeneral().StringToContinent(string: com.continent!) ?? Continent.afrique))
+                    
+                    //await communitiesVM.communities.append(com.APItoClass())
+                }
+         
+                
+                eventsVM.refresh()
+                
+                await usersVM.getMyUserAirtable()
+                if usersVM.myUserAPI != nil {
+                    await usersVM.myUser = usersVM.myUserAPI!.APItoClass()
+                } else {
+                    print("CA NE MARCHE PASS")
+                }
+            }
+        }
     }
 }
-
-struct ProfilView_Previews: PreviewProvider {
-    static var previews: some View {
-        //let userViewModel = UserViewModel(currentUser: myUser)
-        
-        ProfilView(currentUser: myUser, eventsList: EventsViewModel())
-        //.environmentObject(userViewModel) // Provide the UserViewModel as an environment object
-    }
-}
+//
+//struct ProfilView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        //let userViewModel = UserViewModel(currentUser: myUser)
+//
+//        ProfilView(currentUser: dataVM.usersVM.myUser)
+//        //.environmentObject(userViewModel) // Provide the UserViewModel as an environment object
+//    }
+//}

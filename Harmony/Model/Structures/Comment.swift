@@ -18,12 +18,22 @@ import Foundation
 class Comment : Identifiable, ObservableObject {
     var id = UUID()
     
-    @Published var user: User
+    var isFetch = true
+    @Published var idAPI: String
+    @Published var user: User?
     @Published var content: String
-    @Published var date: Date
+    @Published var date: Date?
     
+    init(idAPI: String) {
+        self.isFetch = false
+        self.idAPI = idAPI
+        self.user = nil
+        self.content = ""
+        self.date = nil
+    }
     
-    init(user: User, content: String, date: Date) {
+    init(idAPI: String = "", user: User? = nil, content: String, date: Date? = nil) {
+        self.idAPI = idAPI
         self.user = user
         self.content = content
         self.date = date
@@ -35,7 +45,7 @@ class Comment : Identifiable, ObservableObject {
         dateFormatter.timeStyle = .short
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: self.date)
+        return dateFormatter.string(from: self.date!)
     }
 }
 
@@ -43,13 +53,23 @@ class Comment : Identifiable, ObservableObject {
 class PostComment : Identifiable, ObservableObject {
     var id = UUID()
     
-    @Published var user: User
+    var isFetch = true
+    @Published var idAPI: String
+    @Published var user: User?
     @Published var content: String
-    @Published var date: Date
+    @Published var date: Date?
     @Published var comlikes: Int
     
+    init(idAPI: String) {
+        self.idAPI = idAPI
+        self.user = nil
+        self.content = ""
+        self.date = nil
+        self.comlikes = 0
+    }
     
-    init(user: User, content: String, date: Date, comlikes: Int) {
+    init(idAPI: String = "", user: User?, content: String, date: Date? = nil, comlikes: Int) {
+        self.idAPI = idAPI
         self.user = user
         self.content = content
         self.date = date
@@ -62,7 +82,7 @@ class PostComment : Identifiable, ObservableObject {
         dateFormatter.timeStyle = .short
         dateFormatter.locale = Locale(identifier: "fr_FR")
         
-        return dateFormatter.string(from: self.date)
+        return dateFormatter.string(from: self.date!)
     }
 }
 

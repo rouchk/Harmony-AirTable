@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct OtherUserProfileView: View {
-    @ObservedObject var user : User
+    
+    @ObservedObject var user: User
+    @ObservedObject var usersVM: UsersVM
     @ObservedObject var eventsList : EventsViewModel
+    @ObservedObject var communitiesVM : CommunitiesVM
+    
     let now = Date()
     
     @State private var isEditingProfile = false // Add a state for controlling the navigation
@@ -21,11 +25,10 @@ struct OtherUserProfileView: View {
     
     func myNextEvent(user: User) -> Event {
         let myFuturEvents = eventsList.eventsList.filter { event in
-            (event.listParticipant.contains(user)) && (event.date >= now)
-        }.sorted(by: { $0.date < $1.date })
+            (event.listParticipant.contains(user)) && (event.date! >= now)
+        }.sorted(by: { $0.date! < $1.date! })
         return myFuturEvents[0]
     }
-    
     
     var body: some View {
 
@@ -112,7 +115,7 @@ struct OtherUserProfileView: View {
                                 ForEach(myCommunities(user: user)) { community in
                                     
                                     NavigationLink {
-                                        DetailCommunityView(community: community, eventsList: EventsViewModel())
+                                        DetailCommunityView(community: community, eventsList: eventsList, communitiesVM: communitiesVM, usersVM: usersVM)
                                     } label: {
                                         ZStack(alignment: .top) {
                                             Rectangle()
@@ -147,7 +150,7 @@ struct OtherUserProfileView: View {
                             .modifier(Head1())
                         
                         NavigationLink {
-                            DetailEventView(event: myNextEvent(user: user))
+                            DetailEventView(event: myNextEvent(user: user), eventsVM: eventsList, usersVM: usersVM, communitiesVM: communitiesVM)
                         } label: {
                             EventListRowView(myEvent: myNextEvent(user: user))
                                 .cornerRadius(8)
@@ -182,9 +185,9 @@ struct OtherUserProfileView: View {
         }
     }
 
-
-struct OtherUserProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        OtherUserProfileView(user: userJeanChristophe, eventsList: EventsViewModel())
-    }
-}
+//
+//struct OtherUserProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        OtherUserProfileView(user: userJeanChristophe, eventsList: EventsViewModel())
+//    }
+//}

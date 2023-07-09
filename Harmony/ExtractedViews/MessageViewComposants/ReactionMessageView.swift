@@ -12,6 +12,10 @@ struct ReactionMessageView: View {
     @ObservedObject var user: User
     @ObservedObject var conversation: Conversation
     @ObservedObject var message: Message
+    @ObservedObject var eventsVM: EventsViewModel
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM: CommunitiesVM
+    
     @Binding var isMessageReaction: Bool
     
     var body: some View {
@@ -40,7 +44,7 @@ struct ReactionMessageView: View {
             .background(Color.darkPeriwinkle)
             .cornerRadius(10)
             
-            LabelMessageView(user: user, message: message.content)
+            LabelMessageView(user: user, message: message.content, eventsVM: eventsVM, usersVM: usersVM, communitiesVM: communitiesVM)
                 .onTapGesture {
                     message.isReaction = false
                     isMessageReaction.toggle()

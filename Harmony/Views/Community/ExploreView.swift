@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ExploreView: View {
     
-    @ObservedObject var currentUser: User
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM : CommunitiesVM
+    @ObservedObject var eventsVM : EventsViewModel
+    
     @State var textToSearch = ""
     @State var isContinentsActivited: [Continent : Bool] = [:]
     @State var isAllContinentsActivited: Bool = false
@@ -30,8 +33,11 @@ struct ExploreView: View {
     @State var showSheet = false
     
     
-    init(currentUser: User) {
-        self.currentUser = currentUser
+    init(usersVM: UsersVM, communitiesVM: CommunitiesVM, eventsVM: EventsViewModel) {
+        self.usersVM = usersVM
+        self.communitiesVM = communitiesVM
+        self.eventsVM = eventsVM
+        
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(Color.whiteSmoke.opacity(0.1))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor(.midnight)
     }
@@ -40,15 +46,7 @@ struct ExploreView: View {
     var body: some View {
         
         NavigationStack {
-            //            ScrollView {
             VStack {
-                
-                //                TextField("Rechercher une communauté",
-                //                          text: $searchCommunity)
-                //                    .textFieldStyle(.roundedBorder)
-                //                    .frame(width: 342, height: 44)
-                //                    .padding(.bottom, 8)
-                
                 HStack {
                     Button {
                         showSheet.toggle()
@@ -65,12 +63,11 @@ struct ExploreView: View {
                     .cornerRadius(10)
                 }
                 
-                
                 List {
                     ForEach(serchCommunity) { culture in
                         ZStack {
                             NavigationLink {
-                                DetailCommunityView(community: culture, eventsList: EventsViewModel())
+                                DetailCommunityView(community: culture, eventsList: eventsVM, communitiesVM: communitiesVM, usersVM: usersVM)
                             } label: {
                                 EmptyView()
                             }
@@ -101,14 +98,20 @@ struct ExploreView: View {
         .sheet(isPresented: $showSheet){
             FilterView(showSheet: $showSheet, isOptionsActivited: $isContinentsActivited, isAllOptionsActivited: $isAllContinentsActivited, isMyCommunities: $isMyCommunities)
         }
+        
+        .onAppear {
+            Task {
+                communitiesVM.refresh()
+            }
+        }
     }
     
     var serchCommunity: [Community] {
         var array1 : [Community] = []
-        let array2 = arrayOfCulture
+        let array2 = communitiesVM.communities
         
         if (isMyCommunities) {
-            array1 = array2.filter { $0.members.contains(currentUser)}
+            array1 = array2.filter { $0.members.contains(usersVM.myUser!)}
         } else {
             if (isContinentsActivited != [:]) && isOneContinentIsActivited() {
                 for (cont, isCont) in isContinentsActivited {
@@ -130,9 +133,9 @@ struct ExploreView: View {
         }
     }
 }
-
-struct ExploreView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExploreView(currentUser: myUser)
-    }
-}
+//
+//struct ExploreView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ExploreView(currentUser: myUser)
+//    }
+//}

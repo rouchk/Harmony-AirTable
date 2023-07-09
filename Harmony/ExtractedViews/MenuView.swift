@@ -9,41 +9,53 @@ import SwiftUI
 
 struct MenuView: View {
     
-    init() {
-        UITabBar.appearance().backgroundColor = UIColor(Color.white)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(Color("GraySky"))
-      }
+    
+    @ObservedObject var usersVM : UsersVM
+    @ObservedObject var eventsVM : EventsViewModel
+    @ObservedObject var newsmodel : Post
+    @ObservedObject var communitiesVM : CommunitiesVM
+    
+//    init() {
+//        
+////        self.usersVM = usersVM
+////        self.eventsVM = eventsVM
+////        self.newsmodel = newsmodel
+////        
+//        UITabBar.appearance().backgroundColor = UIColor(Color.white)
+//        UITabBar.appearance().unselectedItemTintColor = UIColor(Color("GraySky"))
+//       
+//      }
     
     var body: some View {
         ZStack {
             TabView {
-                NewsView(newsmodel: Post())
+                NewsView(usersVM: usersVM, newsmodel: newsmodel, eventsVM: eventsVM, communitiesVM: communitiesVM)
                     .tabItem {
                     Image(systemName: "house")
                             .environment(\.symbolVariants, .none)
                     Text("Actualités")
                 }
                 
-                EventsView()
+                EventsView(usersVM: usersVM, eventsList: eventsVM, communitiesVM: communitiesVM)
                     .tabItem {
                     Image(systemName: "calendar")
                     Text("Evénements")
                 }
                 
-                ExploreView(currentUser: myUser)
+                ExploreView(usersVM: usersVM, communitiesVM: communitiesVM, eventsVM: eventsVM)
                     .tabItem {
                     Image(systemName: "globe")
                     Text("Explorer")
                 }
                 
-                ChatView(user: myUser)
+                ChatView(users: usersVM, eventsVM: eventsVM, communitiesVM: communitiesVM)
                     .tabItem {
                     Image(systemName: "bubble.left.and.bubble.right")
                             .environment(\.symbolVariants, .none)
                     Text("Messages")
                 }
                 
-                ProfilView(currentUser: myUser, eventsList: EventsViewModel())
+                ProfilView(usersVM: usersVM, eventsVM: eventsVM, communitiesVM: communitiesVM)
                     .tabItem {
                     Image(systemName: "person")
                             .environment(\.symbolVariants, .none)
@@ -54,9 +66,9 @@ struct MenuView: View {
         }
     }
 }
-
-struct MenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuView()
-    }
-}
+//
+//struct MenuView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MenuView()
+//    }
+//}

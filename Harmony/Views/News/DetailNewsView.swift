@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct DetailNewsView: View {
+    
+    @ObservedObject var usersVM: UsersVM
+    @ObservedObject var communitiesVM: CommunitiesVM
+    @ObservedObject var eventsList: EventsViewModel
     @ObservedObject var news: News
+    
     @State private var isLiked = false
     @State var newContent: String = ""
     var myProfil: User = userSonia
     var community : Community
-    @ObservedObject var eventsList: EventsViewModel
     
     var body: some View {
 
@@ -51,7 +55,7 @@ struct DetailNewsView: View {
                         .padding()
                     
                     NavigationLink {
-                        OtherUserProfileView(user: news.author, eventsList: EventsViewModel())
+                        OtherUserProfileView(user: news.author, usersVM: usersVM, eventsList: eventsList, communitiesVM: communitiesVM)
                     } label: {
                         HStack{
                             Image(news.author.photo)
@@ -67,7 +71,7 @@ struct DetailNewsView: View {
                         }
                     }
                     
-                    Text("Publié le 12 juin 2023")
+                    Text("Publié le " + APIGeneral().dateToString(date: news.publishDate))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .modifier(Normal())
                         .padding(.leading)
@@ -75,7 +79,7 @@ struct DetailNewsView: View {
                     Text("\(news.content)")
                         .padding()
                     
-                    NavigationLink(destination: DetailCommunityView(community: news.community, eventsList: EventsViewModel()), label: {
+                    NavigationLink(destination: DetailCommunityView(community: news.community, eventsList: eventsList, communitiesVM: communitiesVM, usersVM: usersVM), label: {
                         Text("Découvre la communauté")
                             .frame(width: 336, height: 57)
                             .background(Color.darkPeriwinkle)
@@ -117,9 +121,9 @@ struct DetailNewsView: View {
 }//fin detail view
 
 
-
-struct DetailNewsView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailNewsView(news: exemplePost,community: culturejaponaise, eventsList: EventsViewModel())
-    }
-}
+//
+//struct DetailNewsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailNewsView(news: exemplePost,community: culturejaponaise, eventsList: EventsViewModel())
+//    }
+//}
